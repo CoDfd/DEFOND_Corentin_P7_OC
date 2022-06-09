@@ -74,7 +74,7 @@ exports.modifyArticle = (req, res, next) => {
     async function (err, result) {
         if (err) {
             console.log('error 404 not found');
-            res.status(400).json({ error });
+            res.status(404).json( { error: new Error('No such Article!') } );
         }else{
             const article = result[0];
 
@@ -109,3 +109,42 @@ exports.modifyArticle = (req, res, next) => {
     });
 }
 
+//Controller DELETE
+exports.deleteArticle = (req, res, next) => {
+    console.log('--> Passage dans la route DELETE <--');
+    console.log(req.params.id);
+
+    //Récupération de l'article à supprimer
+    mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.id,  
+    function (err, result) {
+        if (err) {
+            console.log('error 404 not found');
+            res.status(404).json( { error: new Error('No such Article!') } );
+        }else{
+            const article = result[0];
+
+            //Vérification que la demande de modification vient de l'auteur de l'article
+            if (result[0].user_id !== req.auth.user_id) {
+                console.log('Unauthorized request!');
+                res.status(400).json( { error: new Error('Unauthorized request!') } );
+            } else {
+                const filename = article.imageUrl.split('/images/')[1];
+                fs.unlinkSync(`images/${filename}`);
+
+                //suppression de la donnée
+                mysqlconnection.query('DELETE FROM article WHERE id = ?', req.params.id,  
+                function (err, result) {
+                    if (err) {
+                        console.log('erreur de suppression');
+                        res.status(400).json({ error });
+                    }else{
+                        res.status(200).json('Article supprimé');
+                        console.log('Article supprimé');
+                    }
+                });
+            }
+
+
+        }
+    });
+}

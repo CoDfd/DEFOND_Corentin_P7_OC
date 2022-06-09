@@ -16,6 +16,8 @@ router.get('/', auth, articleCtrl.getAllArticles);
 router.get('/:id', auth, articleCtrl.getOneArticle);
 //route PUT
 router.put('/:id', auth, multer, articleCtrl.modifyArticle);
+//route DELETE
+router.delete('/:id', auth, articleCtrl.deleteArticle);
 
 
 module.exports = router;
