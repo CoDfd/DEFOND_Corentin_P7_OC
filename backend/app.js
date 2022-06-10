@@ -1,8 +1,11 @@
+//import des paquets
 const express = require(`express`); 
 const mysql = require(`mysql`);
 
+//connexion aux routes
 const userRoutes = require(`./routes/user`);
 const articleRoutes = require(`./routes/article`);
+const commentRoutes = require(`./routes/comment`);
 
 const path = require('path');
 
@@ -18,7 +21,6 @@ mysqlconnection.connect(function(err) {
   if (err) throw err;
   console.log("Connecté à la base de données MySQL!");
 });*/
-
 const mysqlconnection = require('./db/db.mysql');
 
 //Création de l'app par la méthode express
@@ -42,6 +44,9 @@ app.use(`/api/auth`, userRoutes)
 
 //routes de création d'articles
 app.use(`/api/articles`, articleRoutes)
+
+//routes de commentaires
+app.use(`/api/comments`, commentRoutes);
 
 
 module.exports = app;

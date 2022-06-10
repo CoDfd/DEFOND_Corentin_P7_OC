@@ -22,7 +22,7 @@ exports.createArticle = (req, res, next) => {
     }
     console.log(article);
 
-    //La requête SQL pour envoyer les donénes dans la table user
+    //La requête SQL pour envoyer les données dans la table article
     mysqlconnection.query('INSERT INTO article SET ?', article, 
     function (err, result) {
         if (err) {
@@ -57,10 +57,16 @@ exports.getOneArticle = (req, res, next) => {
     mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.id,  
         function (err, result) {
             if (err) {
-                console.log('error 404 not found');
-                res.status(400).json({ error });
+                console.log('error 400');
+                res.status(404).json({ error: 'Bad request' });
             }else{
-                res.status(200).json(result[0]);
+                if (!result[0]) {
+                    console.log('error 404 not found');
+                    res.status(404).json({ error: 'No such Article!' });
+                } else {
+                    console.log(result);
+                    res.status(200).json(result[0]);
+                }
             }
         }
     );
@@ -182,94 +188,87 @@ exports.likeArticle = async (req, res, next) => {
                 console.log('récup des likes');
                 like = result[0].likes;
 
+                //Récupération de la donnée de like dans like_articles
+                console.log(data_like_article);
+                mysqlconnection.query('SELECT * FROM like_articles WHERE user_id = ? AND article_id = ?', data_like_article,  
+                function (err, result) {
+                    if (err) {
+                        console.log('-->here2');
+                        console.log('error wrong way');
+                        res.status(400).json( { error: 'Wrong way' } );
+                    }else{
+                        const like_article = result[0];
+                        console.log('pass here');
+                        console.log(like_article);
 
-
-    //Récupération de la donnée de like dans like_articles
-    console.log(data_like_article);
-    mysqlconnection.query('SELECT * FROM like_articles WHERE user_id = ? AND article_id = ?', data_like_article,  
-    function (err, result) {
-        if (err) {
-            console.log('-->here2');
-            console.log('error wrong way');
-            res.status(400).json( { error: 'Wrong way' } );
-        }else{
-            const like_article = result[0];
-            console.log('pass here');
-            console.log(like_article);
-
-            //si le user et l'article correspondent : déjà un like
-            if (like_article){
-                //cas enlenver le liker
-                if (req.body.like == 0) {
-                    mysqlconnection.query('DELETE FROM like_articles WHERE user_id = ? AND article_id = ?', data_like_article, 
-                    function (err, result){
-                        if (err) {
-                            console.log('dislike failed');
-                            res.status(400).json( { error: 'dislike failed' } );
-                        } else {
-                            like --;
-                            const data_likes_send = [like, articleID];
-                            mysqlconnection.query('UPDATE article SET likes = ? WHERE id = ?', data_likes_send,
-                            function (err, result) {
-                                if (err) {
-                                    console.log('-->here4');
-                                    console.log('error wrong way');
-                                    res.status(400).json( { error: 'Wrong way' } );
-                                }else{
-                                    res.status(200).json('Article modifié : likes incrémentés');
-                                    console.log('Article modifié : likes incrémentés');
-                                }
-                            });
+                        //si le user et l'article correspondent : déjà un like
+                        if (like_article){
+                            //cas enlenver le liker
+                            if (req.body.like == 0) {
+                                mysqlconnection.query('DELETE FROM like_articles WHERE user_id = ? AND article_id = ?', data_like_article, 
+                                function (err, result){
+                                    if (err) {
+                                        console.log('dislike failed');
+                                        res.status(400).json( { error: 'dislike failed' } );
+                                    } else {
+                                        like --;
+                                        const data_likes_send = [like, articleID];
+                                        mysqlconnection.query('UPDATE article SET likes = ? WHERE id = ?', data_likes_send,
+                                        function (err, result) {
+                                            if (err) {
+                                                console.log('-->here4');
+                                                console.log('error wrong way');
+                                                res.status(400).json( { error: 'Wrong way' } );
+                                            }else{
+                                                res.status(200).json('Article modifié : likes incrémentés');
+                                                console.log('Article modifié : likes incrémentés');
+                                            }
+                                        });
+                                    }
+                                });
+                            } 
+                            //cas like déjà donné
+                            else {
+                                console.log('Article déjà liké');
+                                res.status(400).json( { error: 'Article déjà liké' } );
+                            }   
+                        } 
+                        //si le user et l'article ne correspondent pas : like à donnée si req.body.like=1, erreur sinon
+                        else {
+                            //le user n'a jamais liké et veut enlever son like : erreur
+                            if (req.body.like == 0) {
+                                console.log('-->here3')
+                                console.log('Wrong way');
+                                res.status(400).json( { error: 'wrong way' } );
+                            } 
+                            //le user donne son like qu'il n'avait jamais donné
+                            else {
+                                mysqlconnection.query('INSERT INTO like_articles(user_id, article_id) VALUES (?, ?)', data_like_article, 
+                                function (err, result){
+                                    if (err) {
+                                        console.log('like failed');
+                                        res.status(400).json( { error: 'Like failed' } );
+                                    } else {
+                                        like ++;
+                                        console.log(like);
+                                        const data_likes_send = [like, articleID];
+                                        mysqlconnection.query('UPDATE article SET likes = ? WHERE id = ?', data_likes_send,
+                                        function (err, result) {
+                                            if (err) {
+                                                console.log('-->here4');
+                                                console.log('error wrong way');
+                                                res.status(400).json( { error: 'Wrong way' } );
+                                            }else{
+                                                res.status(200).json('Article modifié : likes incrémentés');
+                                                console.log('Article modifié : likes incrémentés');
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                         }
-                    });
-                } 
-                //cas like déjà donné
-                else {
-                    console.log('Article déjà liké');
-                    res.status(400).json( { error: 'Article déjà liké' } );
-                }   
-            } 
-            //si le user et l'article ne correspondent pas : like à donnée si req.body.like=1, erreur sinon
-            else {
-                //le user n'a jamais liké et veut enlever son like : erreur
-                if (req.body.like == 0) {
-                    console.log('-->here3')
-                    console.log('Wrong way');
-                    res.status(400).json( { error: 'wrong way' } );
-                } 
-                //le user donne son like qu'il n'avait jamais donné
-                else {
-                    mysqlconnection.query('INSERT INTO like_articles(user_id, article_id) VALUES (?, ?)', data_like_article, 
-                    function (err, result){
-                        if (err) {
-                            console.log('like failed');
-                            res.status(400).json( { error: 'Like failed' } );
-                        } else {
-                            like ++;
-                            console.log(like);
-                            const data_likes_send = [like, articleID];
-                            mysqlconnection.query('UPDATE article SET likes = ? WHERE id = ?', data_likes_send,
-                            function (err, result) {
-                                if (err) {
-                                    console.log('-->here4');
-                                    console.log('error wrong way');
-                                    res.status(400).json( { error: 'Wrong way' } );
-                                }else{
-                                    res.status(200).json('Article modifié : likes incrémentés');
-                                    console.log('Article modifié : likes incrémentés');
-                                }
-                            });
-                        }
-                    });
-                }
-            }
-        } 
-    });
-
-
-
-
-
+                    } 
+                });
             }
         }
     });

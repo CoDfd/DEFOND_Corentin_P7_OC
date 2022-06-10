@@ -20,9 +20,15 @@ module.exports = (req, res, next) => {
                 console.log('User ID non valable !');
                 throw `User ID non valable !`;
             } else {
-                req.auth = { user_id: userID };
-                console.log('Authentification réussie');
-                next();
+                if (!result[0]){
+                    console.log('User ID non valable !');
+                    throw `User ID non valable !`;
+                } else {
+                    req.auth = { user_id: userID };
+                    console.log('Authentification réussie');
+                    next();
+                }
+
             }
         })
         
@@ -41,6 +47,6 @@ module.exports = (req, res, next) => {
             next();
         }*/
     } catch (error) {
-        res.status(401).json({ error: 'Requête non authentifiée'})
+        res.status(401).json({ error: 'Requête non authentifiée'});
     }
 };
