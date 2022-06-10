@@ -59,3 +59,43 @@ exports.getOneComment = (req, res, next) => {
     );
 }
 
+//controller DELETE
+exports.deleteComment = (req, res, next) => {
+    console.log('--> Passage dans la route DELETE COMMENT <--');
+
+    //Récupération du comment à supprimer pour checks sécurité
+    mysqlconnection.query('SELECT * FROM comment WHERE id = ?', req.params.id,  
+    function (err, result) {
+        if (err) {
+            console.log('error wrong way');
+            res.status(400).json( { error: 'Wrong request' } );
+        } else {
+            const comment = result[0];
+            if (!comment){
+                console.log('error 404 not found');
+                res.status(404).json( { error: 'No such Comment!' } );
+            } else {
+
+                //Vérification que la demande de modification vient de l'auteur de l'article
+                if (result[0].user_id !== req.auth.user_id) {
+                    console.log('Unauthorized request!');
+                    res.status(400).json( { error: new Error('Unauthorized request!') } );
+                } else {
+
+                        //suppression de la donnée
+                        mysqlconnection.query('DELETE FROM comment WHERE id = ?', req.params.id,  
+                        function (err, result) {
+                            if (err) {
+                                console.log('erreur de suppression');
+                                res.status(400).json({ error });
+                            }else{
+                                res.status(200).json('Commentaire supprimé');
+                                console.log('Commentaire supprimé');
+                            }
+                        });
+                }
+            }
+
+        }
+    });
+}

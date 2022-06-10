@@ -17,7 +17,7 @@ router.get('/:id', auth, commentCtrl.getOneComment);
 //route PUT
 //router.put('/:id', auth,);
 //route DELETE
-//router.delete('/:id', auth,);
+router.delete('/:id', auth, commentCtrl.deleteComment);
 
 
 
