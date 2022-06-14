@@ -104,7 +104,8 @@ exports.login = (req, res, next) => {
                             console.log(user.id);
                             console.log(typeof user.id);
                             const token = jwt.sign(
-                                { user_id: user.id },
+                                { user_id: user.id,
+                                  user_role : user.admin},
                                 `GROUPOMANIA`,
                                 { expiresIn: `24h` }
                             );

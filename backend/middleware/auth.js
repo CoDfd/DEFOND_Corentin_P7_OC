@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
         const token = req.headers.authorization.split(` `)[1];
         const decodedToken = jwt.verify(token, `GROUPOMANIA`);
         const userID = decodedToken.user_id;
+        const userRole = decodedToken.user_role;
         console.log('- userID :');
         console.log(userID);
 
@@ -24,7 +25,7 @@ module.exports = (req, res, next) => {
                     console.log('User ID non valable !');
                     throw `User ID non valable !`;
                 } else {
-                    req.auth = { user_id: userID };
+                    req.auth = { user_id: userID, user_role : userRole };
                     console.log('Authentification réussie');
                     next();
                 }

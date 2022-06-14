@@ -91,8 +91,8 @@ exports.modifyArticle = (req, res, next) => {
                 res.status(404).json( { error: 'No such Article!' } );
             } else {
 
-                //Vérification que la demande de modification vient de l'auteur de l'article
-                if (result[0].user_id !== req.auth.user_id) {
+                //Vérification que la demande de modification vient de l'auteur de l'article ou de l'admin
+                if (result[0].user_id !== req.auth.user_id || req.auth.user_role === 1) {
                     console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } 
@@ -141,7 +141,7 @@ exports.deleteArticle = (req, res, next) => {
             } else {
 
                 //Vérification que la demande de modification vient de l'auteur de l'article
-                if (result[0].user_id !== req.auth.user_id) {
+                if (result[0].user_id !== req.auth.user_id || req.auth.user === 1) {
                     console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } else {
