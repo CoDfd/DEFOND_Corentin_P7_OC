@@ -13,12 +13,13 @@ exports.createArticle = (req, res, next) => {
     console.log('--> Passage dans la route POST <--');
     var article;
     const zero = 0;
+    const date_post = Date.now();
 
     //initialisation de la requete
     if (req.file){
-        article = new Article(req.auth.user_id, req.body.title, req.body.description, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, zero );
+        article = new Article(req.auth.user_id, req.body.title, req.body.description, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, zero, date_post);
     } else {
-        article = new Article(req.auth.user_id, req.body.title, req.body.description, ``, zero );
+        article = new Article(req.auth.user_id, req.body.title, req.body.description, ``, zero, date_post);
     }
     console.log(article);
 
@@ -39,7 +40,7 @@ exports.createArticle = (req, res, next) => {
 //Controller GET all
 exports.getAllArticles = (req, res, next) => {
     
-    mysqlconnection.query('SELECT * FROM article', 
+    mysqlconnection.query('SELECT * FROM article ORDER BY date_post ASC', 
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');
