@@ -12,6 +12,7 @@ const User = require('../models/User');
 
 //Importation de la connection à la bdd
 const mysqlconnection = require('../db/db.mysql');
+const { end } = require('../db/db.mysql');
 
 //signup pour créer un compte
 exports.signup = (req, res, next) => {
@@ -122,3 +123,17 @@ exports.login = (req, res, next) => {
             }
     );
 };
+
+//logout
+exports.logout = (req, res, next) => {
+    const token = req.headers.authorization.split(` `)[1];
+    jwt.sign(token, " ", { expiresIn: `1ms` }, (logout, err) => {
+        if (logout) {
+            res.json({ status : 'Bye !'});
+            //res.redirect('/'); 
+        } else {
+            res.status(400).json({error :'Unable to log out'});
+        }
+    }
+    );
+}
