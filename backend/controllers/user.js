@@ -16,6 +16,7 @@ const { end } = require('../db/db.mysql');
 
 //signup pour créer un compte
 exports.signup = (req, res, next) => {
+    const date_signup = Date.now();
     const emailCryptoJs = cryptojs.HmacSHA256(req.body.email, `GROUPOMANIA`)
         .toString();
     
@@ -43,7 +44,7 @@ exports.signup = (req, res, next) => {
                                     bcrypt.hash(req.body.password, 10) 
                                         .then(hash => {
                                             // envoi à MySQL
-                                            const user = new User(emailCryptoJs, req.body.pseudo, hash);
+                                            const user = new User(emailCryptoJs, req.body.pseudo, hash, date_signup);
                                             console.log('-->user');
                                             console.log(user);
 

@@ -73,6 +73,21 @@ exports.getOneArticle = (req, res, next) => {
     );
 }
 
+//Controller GET All From One
+exports.getAllArticlesFromOne = (req, res, next) => {
+    
+    mysqlconnection.query('SELECT * FROM article WHERE user_id = ? ORDER BY date_post ASC', req.params.user_id,
+        function (err, result) {
+            if (err) {
+                console.log('error 400 - lost access');
+                res.status(400).json({ error });
+            }else{
+                res.status(200).json(result);
+            }
+        }
+    );
+}
+
 //Controller PUT
 exports.modifyArticle = (req, res, next) => {
     console.log('--> Passage dans la route PUT <--');
