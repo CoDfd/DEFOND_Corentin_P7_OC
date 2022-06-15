@@ -1,6 +1,8 @@
 //import des paquets
 const express = require(`express`); 
 const mysql = require(`mysql`);
+//Importation des variables d'environnement
+require('dotenv').config();
 
 //connexion aux routes
 const userRoutes = require(`./routes/user`);
