@@ -22,6 +22,12 @@ exports.signup = (req, res, next) => {
     const date_signup = Date.now();
     const emailCryptoJs = cryptojs.HmacSHA256(req.body.email, process.env.CRYPTOJS_SECRET)
         .toString();
+    var pseudo;
+    if (!req.body.pseudo) {
+        pseudo = req.body.email.split(`@`)[0];
+    } else {
+        pseudo = req.body.pseudo;        
+    }
     
     //Check si le pseudo ou l'email est déjà existant
     mysqlconnection.query('SELECT * FROM user WHERE email = ?', emailCryptoJs,     
@@ -34,7 +40,7 @@ exports.signup = (req, res, next) => {
                     return res.status(401).json({ error: 'Email déjà existant dans la base de donnée !'});
                 } else {
                 
-                    mysqlconnection.query('SELECT * FROM user WHERE pseudo = ?', req.body.pseudo,     
+                    mysqlconnection.query('SELECT * FROM user WHERE pseudo = ?', pseudo,     
                         function (err, result) {
                             if (err) {
                                 console.log(err);
@@ -47,7 +53,7 @@ exports.signup = (req, res, next) => {
                                     bcrypt.hash(req.body.password, 10) 
                                         .then(hash => {
                                             // envoi à MySQL
-                                            const user = new User(emailCryptoJs, req.body.pseudo, hash, date_signup);
+                                            const user = new User(emailCryptoJs, pseudo, hash, date_signup);
                                             console.log('-->user');
                                             console.log(user);
 
@@ -58,7 +64,7 @@ exports.signup = (req, res, next) => {
                                                         console.log(err);
                                                         res.status(400).json({ error });
                                                     }else{
-                                                        res.json({message : `Utilisateur ${req.body.pseudo} enregistré`});
+                                                        res.json({message : `Utilisateur ${pseudo} enregistré`});
                                                     }
                                                 }
                                             );
