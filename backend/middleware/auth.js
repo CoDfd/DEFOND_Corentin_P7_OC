@@ -1,6 +1,9 @@
 //Importation de jasonwebtoken
 const jwt = require(`jsonwebtoken`);
 
+//Importation des variables d'environnement
+require('dotenv').config();
+
 //Importation de la connection à la bdd
 const mysqlconnection = require('../db/db.mysql');
 
@@ -8,7 +11,7 @@ module.exports = (req, res, next) => {
     try {
         console.log('--> Passage dans le middleware auth <--');
         const token = req.headers.authorization.split(` `)[1];
-        const decodedToken = jwt.verify(token, `GROUPOMANIA`);
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         const userID = decodedToken.user_id;
         const userRole = decodedToken.user_role;
         console.log('- userID :');

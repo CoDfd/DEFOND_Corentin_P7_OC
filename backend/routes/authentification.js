@@ -2,16 +2,17 @@ const express = require(`express`);
 const router = express.Router();
 
 //appel du controller
-const userCtrl = require(`../controllers/user`);
+const authCtrl = require(`../controllers/authentification`);
 
 //appels des middlewares
 const multer = require('../middleware/multer-config');
 const auth = require('../middleware/auth');
 
-//route GET one
-router.get('/:id', auth, userCtrl.getOneUser);
-//route DELETE
-//router.delete('/:id', auth, userCtrl.deleteUser);
-
+//route signup
+router.post('/signup', authCtrl.signup);
+//route login
+router.post('/login', authCtrl.login);
+//route logout
+router.delete('/logout', auth, authCtrl.logout);
 
 module.exports = router;

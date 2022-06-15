@@ -5,9 +5,10 @@ const mysql = require(`mysql`);
 require('dotenv').config();
 
 //connexion aux routes
-const userRoutes = require(`./routes/user`);
+const authRoutes = require(`./routes/authentification`);
 const articleRoutes = require(`./routes/article`);
 const commentRoutes = require(`./routes/comment`);
+const userRoutes = require(`./routes/user`);
 
 const path = require('path');
 
@@ -42,10 +43,13 @@ app.use((req, res, next) => {
 
 
 //routes d'identification
-app.use(`/api/auth`, userRoutes)
+app.use(`/api/auth`, authRoutes);
+
+//routes de gestion des users
+app.use('/api/users', userRoutes);
 
 //routes de création d'articles
-app.use(`/api/articles`, articleRoutes)
+app.use(`/api/articles`, articleRoutes);
 
 //routes de commentaires
 app.use(`/api/comments`, commentRoutes);
