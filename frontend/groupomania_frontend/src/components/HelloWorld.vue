@@ -1,6 +1,23 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+
+    <div class="welcome-action">
+      <div class="welcome-action__button">
+        <a href="#">
+          <ButtonRename msg="Login"/>
+        </a>
+      </div>
+      <div class="welcome-action__button">
+        <a href="#">
+          <ButtonRename msg="Signup"/>
+        </a>
+      </div>
+
+
+    </div>
+
+
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -31,11 +48,15 @@
 </template>
 
 <script>
+
+import ButtonRename from '@/components/ButtonRename.vue'
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+    name: "HelloWorld",
+    props: {
+        msg: String
+    },
+    components: { ButtonRename }
 }
 </script>
 
@@ -55,4 +76,21 @@ li {
 a {
   color: #42b983;
 }
+
+.welcome-action{
+  width : 100%;
+  height : 200 px;
+
+  display : flex ;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+
+    & a
+    {
+        text-decoration: none;
+        color: black;
+    }  
+}
+
+
 </style>
