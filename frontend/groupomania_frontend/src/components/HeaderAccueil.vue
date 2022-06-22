@@ -2,7 +2,7 @@
 
     <header>
         <div class="logo">
-        <a title="Groupomania_logo"><img src="../assets/Groupomania_Logos+(3)/icon-left-font-monochrome-black.svg" class="logo__img" alt="Logo Groupomania" title="Groupomnania" /></a>
+        <a title="Groupomania_logo"><img src="../assets/Groupomania_Logos+(3)/icon-left-font-monochrome-white.svg" class="logo__img" alt="Logo Groupomania" title="Groupomnania" /></a>
         </div>  
        
         <nav>
@@ -43,12 +43,12 @@ header
     justify-content: space-between;
     position:relative;
 
+    background-color: #0968EC;
     box-shadow: 0px 5px 5px rgba(0,0,0,0.16) ;
 
     & .logo
     {   
         margin : 0;
-        border : solid blue 2px;
         width: auto;
         height: auto;
         padding: 20px 0px 0px 0px;
@@ -58,6 +58,7 @@ header
         text-align: center;
 
         &__img{
+            
             height: auto;
             width: auto;
             margin: auto;
@@ -66,7 +67,7 @@ header
 
         & img
         {
-
+           
             width: 80%;
             height : 80%;
             object-fit: contain;
@@ -86,16 +87,18 @@ header
             &__button {
                 width: 100%;
                 height: 100%;
-                border-top: 3px solid white;
+                border-top: 3px solid #0968EC;
 
                 & p {
                     margin-top: 25%;
+                    color : white;
+                    font-weight: 800;
                 }
 
                 &:hover
                 {
-                    color : #0065fc;
-                    border-top: 3px solid #0065fc;
+                    color : #0968EC;
+                    border-top: 3px solid white;
                 }
             }
 

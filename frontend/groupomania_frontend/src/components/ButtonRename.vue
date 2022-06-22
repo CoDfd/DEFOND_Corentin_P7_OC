@@ -1,6 +1,6 @@
 <template>
     <div class="button">
-        <p>{{ msg }}</p>
+        <p>{{ name }}</p>
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   name: 'ButtonRename',
   props: {
-    msg: String
+    name : String
   }
 }
 </script>
@@ -22,7 +22,7 @@ export default {
         width: 220px;
         font-size: 110%;
         font-weight: 600;
-        background-color: lighten(#3b5998,0%);
+        background-color: lighten(#0968EC,0%);
         color: white;
 
         display: flex;
