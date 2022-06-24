@@ -5,15 +5,15 @@
     <div class="welcome-action">
 
       <div class="welcome-action__button">
-        <a href="#">
+        <router-link to="/auth/login">
           <ButtonRename name="Login"/>
-        </a>
+        </router-link>
       </div>
 
       <div class="welcome-action__button">
-        <a href="#">
+        <router-link to="/auth/signup">
           <ButtonRename name="Signup"/>
-        </a>
+        </router-link>
       </div>
 
     </div>
@@ -46,6 +46,7 @@ export default {
   background-color: #F0F2F5;
   margin : 0;
   padding-top: 20px;
+  flex : 1;
 
   display : flex ;
   flex-direction: column;

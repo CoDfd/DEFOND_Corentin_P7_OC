@@ -1,23 +1,19 @@
 <template>
 
   <div class="home">
-    <HeaderAccueil/>
-    <AccueilPage msg="Bienvenue sur Groupalink"/>
+    <HeaderPages/>
     <FooterAll/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import AccueilPage from '@/components/AccueilPage.vue' 
-import HeaderAccueil from '@/components/HeaderAccueil.vue' 
+import HeaderPages from '@/components/HeaderPages.vue' 
 import FooterAll from '@/components/FooterAll.vue'
 
 export default {
-  name: 'AccueilView',
+  name: 'HomeView',
   components: {
-    AccueilPage,
-    HeaderAccueil,
+    HeaderPages,
     FooterAll
   }
 }

@@ -2,27 +2,26 @@
 
     <header>
         <div class="logo">
-        <a title="Groupomania_logo"><img src="../assets/Groupomania_Logos+(3)/icon-left-font-monochrome-white.svg" class="logo__img" alt="Logo Groupomania" title="Groupomnania" /></a>
+            <a title="Groupomania_logo"><img src="../assets/Groupomania_Logos+(3)/icon-left-font-monochrome-white.svg" class="logo__img" alt="Logo Groupomania" title="Groupomnania" /></a>
+
+           <font-awesome-icon  icon="fa-solid fa-house" />
+        
+        
         </div>  
        
         <nav>
             <div class="nav">
-                <router-link to="/auth/login">
-                    <div v-if="lsref === 'login'" class="nav__buttonselected">
-                        <p>Login</p>
-                    </div>
-                    <div v-else class="nav__button">
-                        <p>Login</p>
+                <router-link to="/">
+                    <div class="nav__button">
+                        <p>Logout</p>
                     </div>
                 </router-link>
             </div>
             <div class="nav">
-                <router-link to="/auth/signup">
-                    <div v-if="lsref === 'signup'" class="nav__buttonselected">
-                        <p>Signup</p>
-                    </div>
-                    <div v-else class="nav__button">
-                        <p>Signup</p>
+                <router-link to="/:profil">
+
+                    <div class="nav__button">
+                        <p>Profile</p>
                     </div>
                 </router-link>
             </div>
@@ -34,10 +33,7 @@
 
 <script>
 export default {
-  name: 'HeaderAccueil',
-  props: {
-        lsref: String
-    }
+  name: 'HeaderPages'
 }
 </script>
 
@@ -45,6 +41,8 @@ export default {
 <style scoped lang="scss">
 header
 {
+    border : solid black 2px;
+
     width: 100%;
     height : 100px;
     margin: 0;
@@ -57,6 +55,8 @@ header
 
     & .logo
     {   
+        border : dotted red 1px;
+
         margin : 0;
         width: auto;
         height: auto;

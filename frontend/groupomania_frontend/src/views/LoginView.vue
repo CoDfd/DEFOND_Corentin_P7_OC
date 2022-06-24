@@ -1,7 +1,7 @@
 <template>
 
   <div class="home">
-    <HeaderAccueil/>
+    <HeaderAccueil lsref="login"/>
     <LoginPage/>
     <FooterAll/>
   </div>
@@ -29,6 +29,9 @@ export default {
   height : 100vh;
   margin : 0;
   padding : 0;
+
+  display : flex;
+  flex-direction: column;
 }
 
 </style>

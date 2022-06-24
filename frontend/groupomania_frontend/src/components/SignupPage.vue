@@ -11,7 +11,7 @@
 
       <div class="welcome-action">
 
-        <LoginSignupForm lsref="login"/>
+        <LoginSignupForm lsref="signup"/>
 
       </div>
 
@@ -25,8 +25,7 @@ import LoginSignupForm from '@/components/LoginSignupForm.vue'
 
 export default {
     
-    name: "LoginPage",
-
+    name: "SignupPage",
     components: { 
       LoginSignupForm
    },

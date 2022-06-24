@@ -11,7 +11,7 @@
 
       <div class="welcome-action">
 
-        <LoginSignupForm lsref="login"/>
+        <LoginSignupForm :name="queue_url"/>
 
       </div>
 
@@ -26,11 +26,47 @@ import LoginSignupForm from '@/components/LoginSignupForm.vue'
 export default {
     
     name: "LoginPage",
+    data() {
+      return {
+        queue_url:" "
+      }
+      
 
+    },
+    props: {
+        msg: String
+    },
     components: { 
       LoginSignupForm
    },
+   computed: {
+      getQueue () {
+      //récupération de l'URL
+      const urlProductString = window.location.href;
+      // Supprimons l'éventuel dernier slash de l'URL
+      const urlcourante = urlProductString.replace(/\/$/, "");
+      // Gardons dans la variable queue_url uniquement la portion derrière le dernier slash de urlcourante
+      const queue = urlcourante.substring (urlcourante.lastIndexOf( "/" )+1 );
+      return queue;
+    }
+   },
+   methods: {
+    getUrlQueue : function () {
+      //récupération de l'URL
+      const urlProductString = window.location.href;
+      // Supprimons l'éventuel dernier slash de l'URL
+      const urlcourante = urlProductString.replace(/\/$/, "");
+      // Gardons dans la variable queue_url uniquement la portion derrière le dernier slash de urlcourante
+      const queue = urlcourante.substring (urlcourante.lastIndexOf( "/" )+1 );
+      console.log(queue);
+      this.queue_url = queue;
+    }
+   },
 
+   created : function() {
+    this.getUrlQueue()
+    
+   }
 }
 </script>
 
