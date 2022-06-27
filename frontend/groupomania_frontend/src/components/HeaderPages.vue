@@ -4,7 +4,9 @@
         <div class="logo">
             <a title="Groupomania_logo"><img src="../assets/Groupomania_Logos+(3)/icon-left-font-monochrome-white.svg" class="logo__img" alt="Logo Groupomania" title="Groupomnania" /></a>
 
-           <font-awesome-icon  icon="fa-solid fa-house" />
+           <div class="home_icon">
+                <router-link to="/home"><font-awesome-icon icon="fa-solid fa-house" class="fa-user"/></router-link>
+            </div>
         
         
         </div>  
@@ -41,33 +43,30 @@ export default {
 <style scoped lang="scss">
 header
 {
-    border : solid black 2px;
-
     width: 100%;
     height : 100px;
     margin: 0;
     display: flex;
     justify-content: space-between;
-    position:relative;
+    position:fixed;
+    top :0;
+    z-index: 1;
 
     background-color: #0968EC;
     box-shadow: 0px 5px 5px rgba(0,0,0,0.16) ;
 
     & .logo
     {   
-        border : dotted red 1px;
-
         margin : 0;
         width: auto;
         height: auto;
         padding: 20px 0px 0px 0px;
     
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         text-align: center;
 
         &__img{
-            
             height: auto;
             width: auto;
             margin: auto;
@@ -80,6 +79,23 @@ header
             width: 80%;
             height : 80%;
             object-fit: contain;
+        }
+
+        & .home_icon {
+            height : auto;
+            width : auto;
+            margin: auto;
+            display: flex;
+            color : white;
+            font-size:50px;
+
+            & .fa-user {
+                color : white;
+
+                &:hover{
+                    transform: scale(1.1);
+                }
+            }
         }
     }
 
