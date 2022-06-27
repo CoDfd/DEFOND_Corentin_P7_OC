@@ -32,13 +32,27 @@
 
       <div class="article__comment__form">
         <div class="article__comment__form__text">
-          <textarea name="comment" id="comment" placeholder="Ajouter un commentaire" rows="1"></textarea>
+          <textarea name="comment" id="comment" placeholder="Ajouter un commentaire" rows="2"></textarea>
         </div>
         
         <div class="article__comment__form__submit">
           <label for="submit"><p>Commenter</p></label>
           <input type="submit" value="commenter" id="submit">
         </div>
+      </div>
+
+      <div class="article__comment__comments">
+
+        <div class="article__comment__comments__unit">
+          <p class="comment_author"><span class="comment_author__name">"Name"</span>, le "Date string" :</p>
+          <p class="comment_description">"c'est le commentaire ici. Lorem ipsum etc etc ..."</p>
+        </div>
+
+        <div class="article__comment__comments__unit">
+          <p class="comment_author"><span class="comment_author__name">"Name"</span>, le "Date string" :</p>
+          <p class="comment_description">"c'est le commentaire ici. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "</p>
+        </div>
+
       </div>
 
     </div>
@@ -78,8 +92,6 @@ export default {
   font-size: 85%;
 
   &__header {
-    border : dotted black 1px;
-
     width : 100%;
     height : auto;
     line-height: 130%;
@@ -96,14 +108,14 @@ export default {
   }
 
   &__description {
-    border : dotted black 1px;
-
-    width : 100%;
+    padding : 0 20px 0 20px;
+    width : auto;
     height : auto;
     line-height: 120%;
     text-align: start;
     & p{
       vertical-align: top;
+      text-align: justify;
     }
   }
 
@@ -141,6 +153,102 @@ export default {
       & p{
         vertical-align: top;
         margin : 0;
+      }
+    }
+  }
+
+  &__comment {
+
+    width : 100%;
+    height : auto;
+    padding : 0px;
+
+    display: flex;
+    flex-direction: column;
+
+    &__form {
+      width : auto;
+      height : auto ;
+      padding : 5px;
+      display : flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+      gap: 0px;
+
+      &__text {
+        width : 100%;
+        display : flex;
+
+        & textarea{
+          width : 95%;
+        }
+      }
+
+      &__submit{
+        display : flex;
+        justify-content: flex-start;
+        padding : 0 0 0 5px;
+        width : 50%;
+        height : auto;
+
+        & label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          height : 20px;
+          padding : 0;
+          margin : 0;
+          text-decoration: underline;
+          font-weight: 500;
+
+          &:hover {
+            color : blue;
+          }
+        }
+
+        & input {
+          visibility : hidden;
+        }
+
+      }
+    }
+
+    &__comments {
+      width : auto;
+      height : auto ;
+      padding : 10px 5px 5px 5px;
+      display : flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-around;
+      gap: 10px;
+
+      &__unit {
+        border : solid lightgray 2px;
+        border-radius:5px;
+        background-color: #F0F2F5;
+        width : 98%;
+        padding : 2px 5px 5px 5px;
+
+        & p{
+          margin : 0;
+          line-height: 120%;
+        }
+
+        & .comment_author {
+          font-style: italic;
+          text-align: justify;
+          line-height: 200%;
+          &__name {
+            font-weight: 600;
+          }
+        }
+        & .comment_description {
+          line-height: 120%;
+          text-align: justify;
+        }
       }
     }
   }
