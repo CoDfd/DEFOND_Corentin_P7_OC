@@ -2,21 +2,16 @@
   <div class="article">
 
     <div class="article__header">
-      <h2>"Titre"</h2>
-      <p> Par <span>"Use Name"</span>, le <span>"date stringifiée"</span></p>
+      <h2>{{article.title}}</h2>
+      <p> Par <span>{{article_author}}</span>, le {{convertDate.day}} à {{convertDate.hour}}</p>
     </div>
 
     <div class="article__description">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
-      </p>
+      <p>{{article.description}}</p>
     </div>
 
     <div class = "article__image">
-      <img src="../assets/UserImages/Image image.png" class="article__image__img" alt="user name" title="user name" />
+      <img :src="article.imageUrl" class="article__image__img" alt="Image article" title="Image article" />
     </div>
 
     <div class = "article__like">
@@ -24,7 +19,7 @@
         <p><font-awesome-icon icon="fa-solid fa-thumbs-up" /> J'aime</p>
       </div>
       <div class = "article__like__likes">
-        <p><span class="article__like__likes__nulber" >"nombre"</span> likes</p>
+        <p><span class="article__like__likes__nulber" >{{article.likes}}</span> likes</p>
       </div>
     </div>
 
@@ -62,13 +57,49 @@
 </template>
 
 <script>
-
+import axios from 'axios';
 //import ButtonRename from '@/components/ButtonRename.vue'
 
 export default {
-    name: "ArticleComponent",
+    name: "ArticleComponent", 
+    props: {
+      article : {
+        type : Object,
+        required: true
+      }
+    },
+    data () {
+      return {
+        article_author:" ",
+      }
+    },
+    components: {  },
+    computed : {
+      convertDate() {
+        const date_result = new Date(this.article.date);
+        const article_date = {
+          day : date_result.toLocaleDateString('fr-FR'),
+          hour : date_result.toLocaleTimeString('fr-FR')
+        }
+        return article_date;
+      }
 
-    components: {  }
+    },
+  methods : { 
+    getArticleAuthor: function () {
+      const userId = this.article.user_id
+      axios.get(`http://localhost:3000/api/users/${userId}`)
+      .then(response =>{
+        this.article_author = response.pseudo;
+      })
+      .catch(e => {
+      this.errors.push(e)
+      })
+    }
+  }, 
+  created : function () {
+    this.getArticleAuthor;
+  }
 }
 </script>
 

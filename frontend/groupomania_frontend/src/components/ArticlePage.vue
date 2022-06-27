@@ -3,10 +3,7 @@
 
     <div class="home__scroll">
 
-      <HomePost/>
-
-      <ArticleComponent/>
-      <ArticleComponent/>
+      <ArticleComponent :article="article"/>
 
     </div>
    
@@ -14,17 +11,43 @@
 </template>
 
 <script>
-import HomePost from '@/components/HomePost.vue'
+import axios from 'axios';
 import ArticleComponent from '@/components/ArticleComponent.vue'
 
 export default {
     
-    name: "HomePage",
-
-    components: { 
-      HomePost,
+  name: "ArticlePage",
+  components: { 
       ArticleComponent
-   },
+  },
+  data () {
+    return {
+      article:" "
+    }
+  },
+  methods: {
+    getArticle: function () {
+      //Collection of the webpage URL into a string
+      const urlProductString = window.location.href;
+      //Converting the string into an URL
+      const urlArticle = new URL(urlProductString);
+      //Collecting the id of the product
+      const idArticle = urlArticle.searchParams.get('id');
+      axios.get(`http://localhost:3000/api/articles/${idArticle}`)
+        .then(response =>{
+          this.article = response;
+        })
+        .catch(e => {
+        this.errors.push(e)
+        })
+    }
+  },
+
+  created : function() {
+    this.getArticle();
+    
+  }
+
 
 }
 </script>

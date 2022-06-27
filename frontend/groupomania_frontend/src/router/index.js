@@ -4,6 +4,7 @@ import AccueilView from '../views/AccueilView.vue'
 import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView'
 import HomeView from '../views/HomeView'
+import ArticleView from '../views/ArticleView'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomeView
+  },  
+  {
+    path: '/articles/:id',
+    name: 'article_id',
+    component: ArticleView
   },
   {
     path: '/about',
