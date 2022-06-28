@@ -54,7 +54,7 @@ exports.getAllArticles = (req, res, next) => {
 
 //Controller GET One
 exports.getOneArticle = (req, res, next) => {
-    
+    console.log(req.params.id);
     mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.id,  
         function (err, result) {
             if (err) {

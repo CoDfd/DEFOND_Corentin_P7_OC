@@ -70,35 +70,39 @@ export default {
     },
     data () {
       return {
-        article_author:" ",
+        article_author:"",
       }
     },
     components: {  },
     computed : {
       convertDate() {
-        const date_result = new Date(this.article.date);
+        const date_result = new Date(this.article.date_post);
         const article_date = {
           day : date_result.toLocaleDateString('fr-FR'),
           hour : date_result.toLocaleTimeString('fr-FR')
         }
         return article_date;
       }
-
     },
-  methods : { 
-    getArticleAuthor: function () {
-      const userId = this.article.user_id
-      axios.get(`http://localhost:3000/api/users/${userId}`)
-      .then(response =>{
-        this.article_author = response.pseudo;
-      })
-      .catch(e => {
-      this.errors.push(e)
-      })
-    }
-  }, 
-  created : function () {
-    this.getArticleAuthor;
+    methods : {
+      getArticleAuthor : function () {
+        //Collecting of the token
+        const token = localStorage.getItem('token');
+        //init de la requête
+        const userId = this.article.user_id;
+        axios.get(`http://localhost:3000/api/users/${userId}`, { headers: { authorization: `Bearer ${token}` } })
+        .then(response =>{
+          this.article_author = response.data.pseudo;
+        })
+        .catch(() => {
+          console.log(`Erreur`); // Une erreur est survenue
+          alert(`Erreur de requête API`);
+        })
+      }
+    }, 
+  beforeUpdate : function () {
+    this.getArticleAuthor();
+    console.log("tchao");
   }
 }
 </script>

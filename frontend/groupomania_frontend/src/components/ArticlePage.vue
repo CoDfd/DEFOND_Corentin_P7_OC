@@ -30,12 +30,16 @@ export default {
       //Collection of the webpage URL into a string
       const urlProductString = window.location.href;
       //Converting the string into an URL
-      const urlArticle = new URL(urlProductString);
+      const urlArticle = urlProductString.replace(/\/$/, "");
       //Collecting the id of the product
-      const idArticle = urlArticle.searchParams.get('id');
-      axios.get(`http://localhost:3000/api/articles/${idArticle}`)
+      const idArticle = urlArticle.substring (urlArticle.lastIndexOf( "/" )+1 );
+      //Collecting of the token
+      const token = localStorage.getItem('token');
+      console.log(token);
+      axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } })
         .then(response =>{
-          this.article = response
+          console.log(response);
+          this.article = response.data;
         })
         .catch(() => {
           console.log(`Erreur`); // Une erreur est survenue

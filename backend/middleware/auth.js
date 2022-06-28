@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
     try {
         console.log('--> Passage dans le middleware auth <--');
         const token = req.headers.authorization.split(` `)[1];
+        console.log(token);
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         const userID = decodedToken.user_id;
         const userRole = decodedToken.user_role;

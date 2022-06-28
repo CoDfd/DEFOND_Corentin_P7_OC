@@ -82,6 +82,8 @@ export default {
       axios.post(`http://localhost:3000/api/auth/login`, user_login)
         .then ((res) => {
           console.log(res);
+          const token = res.data.token;
+          localStorage.setItem('token', token);
           this.$router.replace('home');
         })
         .catch(() => {
