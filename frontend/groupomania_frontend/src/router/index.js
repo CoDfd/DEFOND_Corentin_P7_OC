@@ -15,12 +15,12 @@ const routes = [
     component: AccueilView
   },
   {
-    path: '/auth/login',
+    path: '/login',
     name: 'login',
     component: LoginView
   },
   {
-    path: '/auth/signup',
+    path: '/signup',
     name: 'signup',
     component: SignupView
   },

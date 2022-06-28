@@ -1,6 +1,6 @@
 <template>
   
-  <form method="get" class="lsform">
+  <form method="post" @submit.prevent="lsAuth" class="lsform">
 
     <div class="lsform__header">
       <h2 v-if="lsref === 'login'">Connexion</h2>
@@ -8,21 +8,21 @@
       <p>Veuillez entrer vos informations</p>
     </div>
 
+    <div class="lsform__question">
+      <label for="email">email: </label>
+      <input type="email" name="email" v-model="email" id="email" required>
+      <p id="emailErrorMsg"></p>
+    </div>
+        
     <div v-if="lsref === 'signup'" class="lsform__question">
       <label for="pseudo">pseudo: </label>
-      <input type="text" name="pseudo" id="pseudo">
+      <input type="text" name="pseudo" v-model="pseudo" id="pseudo">
       <p id="pseudoErrorMsg"><!-- ci est un message d'erreur --></p>
     </div>
 
     <div class="lsform__question">
-      <label for="email">email: </label>
-      <input type="email" name="email" id="email" required>
-      <p id="emailErrorMsg"></p>
-    </div>
-
-    <div class="lsform__question">
       <label for="password">password: </label>
-      <input type="text" name="password" id="password" required>
+      <input type="password" name="password" v-model="password" id="password" required>
       <p id="passwordErrorMsg"></p>
     </div>
 
@@ -36,10 +36,74 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'LoginSignupForm',
   props: {
     lsref : String
+  },
+  data () {
+    return {
+      email : "",
+      pseudo : "",
+      password : ""
+    } 
+  },
+  methods : {
+    signup () {
+      const user_signup = {
+        email : this.email, 
+        pseudo : this.pseudo,
+        password : this.password
+      };
+      console.log(user_signup);
+      axios.post(`http://localhost:3000/api/auth/signup`, user_signup)
+        .then((res) => {
+          console.log(res);
+          alert(res.data.message);
+          this.$router.push('login');
+        })
+        .catch(() => {
+          console.log(`Erreur`); // Une erreur est survenue
+          alert(`Erreur de requête API`);
+        })
+    },
+
+    login () {
+      const user_login = {
+        email : this.email,
+        password : this.password
+      };
+      console.log(user_login);
+      //const ulog = JSON.stringify(user_login);
+      //console.log(ulog);
+
+      axios.post(`http://localhost:3000/api/auth/login`, user_login)
+        .then ((res) => {
+          console.log(res);
+          this.$router.replace('home');
+        })
+        .catch(() => {
+          console.log(`Erreur`); // Une erreur est survenue
+          alert(`Erreur de requête API`);
+        })
+    },
+
+    lsAuth () {
+      if (this.lsref === "signup"){
+        console.log('signup route');
+        this.signup();
+      }
+      else if (this.lsref === "login"){
+        console.log('login route');
+        this.login();
+      }
+      else {
+        console.log(`Erreur`); // Une erreur est survenue
+        alert(`Erreur d'aiguillage de requête`);
+      }
+    }
   }
 }
 

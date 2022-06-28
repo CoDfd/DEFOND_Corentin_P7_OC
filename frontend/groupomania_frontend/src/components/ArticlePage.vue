@@ -22,7 +22,7 @@ export default {
   },
   data () {
     return {
-      article:" "
+      article:{}
     }
   },
   methods: {
@@ -35,10 +35,11 @@ export default {
       const idArticle = urlArticle.searchParams.get('id');
       axios.get(`http://localhost:3000/api/articles/${idArticle}`)
         .then(response =>{
-          this.article = response;
+          this.article = response
         })
-        .catch(e => {
-        this.errors.push(e)
+        .catch(() => {
+          console.log(`Erreur`); // Une erreur est survenue
+          alert(`Erreur de requête API (GET)`);
         })
     }
   },

@@ -5,13 +5,13 @@
     <div class="welcome-action">
 
       <div class="welcome-action__button">
-        <router-link to="/auth/login">
+        <router-link to="/login">
           <ButtonRename name="Login"/>
         </router-link>
       </div>
 
       <div class="welcome-action__button">
-        <router-link to="/auth/signup">
+        <router-link to="/signup">
           <ButtonRename name="Signup"/>
         </router-link>
       </div>
