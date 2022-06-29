@@ -5,8 +5,8 @@
 
       <HomePost/>
 
-      <ArticleComponent/>
-      <ArticleComponent/>
+      <ArticleComponent v-for="item in articles" :article="item" :key="item.id"> </ArticleComponent> 
+      <!--v-for="item in articles" :article="item" :article="articles[0]"-->
 
     </div>
    
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import HomePost from '@/components/HomePost.vue'
 import ArticleComponent from '@/components/ArticleComponent.vue'
 
@@ -25,6 +26,34 @@ export default {
       HomePost,
       ArticleComponent
    },
+
+   data () {
+      return {
+        articles:[],
+      }
+    },
+    methods : {
+      getArticles : function () {
+        console.log("on entre dans getArticles")
+        //Collecting of the token
+        const token = localStorage.getItem('token');
+        console.log(token);
+        //requete axios GET All
+        axios.get(`http://localhost:3000/api/articles/`, { headers: { authorization: `Bearer ${token}` } })
+          .then(response =>{
+            console.log(response.data);
+            this.articles = response.data;
+          })
+          .catch(() => {
+            console.log(`Erreur`); // Une erreur est survenue
+            alert(`Erreur de requête API (GET)`);
+          })
+      }
+    },
+    created : function () {
+      console.log("created");
+      this.getArticles();
+    }
 
 }
 </script>

@@ -40,7 +40,7 @@ exports.createArticle = (req, res, next) => {
 //Controller GET all
 exports.getAllArticles = (req, res, next) => {
     
-    mysqlconnection.query('SELECT * FROM article ORDER BY date_post ASC', 
+    mysqlconnection.query('SELECT * FROM article ORDER BY date_post DESC', 
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');
