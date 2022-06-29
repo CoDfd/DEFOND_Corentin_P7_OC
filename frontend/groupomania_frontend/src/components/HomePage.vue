@@ -5,7 +5,14 @@
 
       <HomePost/>
 
-      <ArticleComponent v-for="item in articles" :article="item" :key="item.id"> </ArticleComponent> 
+      <!--<div class="home__scroll__article"  v-for="item in articles" :key="item.id">-->
+        
+        <router-link v-for="item in articles" :key="item.id" :to="{ name: 'article_id', params: { id: item.id }}" class="home__scroll__article">
+          <ArticleComponent :article="item" > </ArticleComponent> 
+        </router-link>
+      
+      
+
       <!--v-for="item in articles" :article="item" :article="articles[0]"-->
 
     </div>
@@ -87,6 +94,21 @@ export default {
     justify-content: flex-start;
     gap : 30px;
     align-items: center;
+
+    &__article {
+      width :90%;
+      height : auto;
+      padding : 0;
+      margin : 0;
+      
+      display : flex ;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+
+      text-decoration: none;
+      color : unset;
+    }
   }
 
 }

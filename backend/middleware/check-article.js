@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         console.log('--> entrée dans le middleware de check pour les commentaires');
 
         //findone si l'article est en bdd
-        mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.body.article_id,     
+        mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.article_id,     
         function (err, result) {
             if (err) {
                 console.log('Bad request');

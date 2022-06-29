@@ -3,7 +3,11 @@
 
     <div class="home__scroll">
 
-      <ArticleComponent :article="article"/>
+      <div>Item: {{ $route.params.id }}</div>
+
+      <div class="home__scroll__container">
+        <ArticleComponent :article="article"/>
+      </div>
 
     </div>
    
@@ -22,10 +26,31 @@ export default {
   },
   data () {
     return {
-      article:{}
+      article:{},
+      comments : []
     }
   },
   methods: {
+    getComments: function (token, article) {
+      console.log('-->on rentre dans la requete get comments');
+      console.log(article);
+      /*//Collecting of the token
+      const token = localStorage.getItem('token');
+      //init request*/
+      const articleId = this.article.id;
+      console.log(articleId);
+      axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } })
+        .then(response =>{
+          console.log('-->réponse à la requete get comments');
+          console.log(response);
+          this.comments = response.data;
+        })
+        .catch(() => {
+          console.log(`Erreur comments`); // Une erreur est survenue
+          alert(`Erreur de requête API (GET)`);
+        })
+    },
+
     getArticle: function () {
       //Collection of the webpage URL into a string
       const urlProductString = window.location.href;
@@ -38,8 +63,11 @@ export default {
       console.log(token);
       axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } })
         .then(response =>{
+          console.log('-->réponse à la requete get one');
           console.log(response);
           this.article = response.data;
+          console.log('-->on va lancer la requete get comments');
+          this.getComments(token, response.data);
         })
         .catch(() => {
           console.log(`Erreur`); // Une erreur est survenue
@@ -86,6 +114,15 @@ export default {
     justify-content: flex-start;
     gap : 30px;
     align-items: center;
+
+    &__container{
+      width : 90%;
+      height : auto;
+      display : flex ;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
   }
 
 }

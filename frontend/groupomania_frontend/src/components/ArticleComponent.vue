@@ -10,7 +10,7 @@
       <p>{{article.description}}</p>
     </div>
 
-    <div class = "article__image">
+    <div v-show="article.imageUrl != ''" class = "article__image">
       <img :src="article.imageUrl" class="article__image__img" alt="Image article" title="Image article" />
     </div>
 
@@ -71,6 +71,7 @@ export default {
     data () {
       return {
         article_author:"",
+        comments:[]
       }
     },
     components: {  },
@@ -85,6 +86,25 @@ export default {
       }
     },
     methods : {
+      getComments: function () {
+        console.log('-->on rentre dans la requete get comments');
+        //Collecting of the token
+        const token = localStorage.getItem('token');
+        //init request
+        const articleId = this.article.id;
+        console.log(articleId);
+        axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } })
+          .then(response =>{
+            console.log('-->réponse à la requete get comments');
+            console.log(response);
+            this.comments = response.data;
+          })
+          .catch(() => {
+            console.log(`Erreur comments`); // Une erreur est survenue
+            alert(`Erreur de requête API (GET)`);
+          })
+      },      
+
       getArticleAuthor : function () {
         //Collecting of the token
         const token = localStorage.getItem('token');
@@ -101,6 +121,7 @@ export default {
       }
     }, 
   beforeUpdate : function () {
+    this.getComments();
     this.getArticleAuthor();
     console.log("tchao");
   }
@@ -111,7 +132,7 @@ export default {
 
 <style scoped lang="scss">
 .article {
-  width : 90%;
+  width : 100%;
   max-width : 900px;
   background-color:white;
   border-radius: 10px;

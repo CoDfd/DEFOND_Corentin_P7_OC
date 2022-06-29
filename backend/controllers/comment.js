@@ -26,7 +26,7 @@ exports.createComment = (req, res, next) => {
 exports.getAllComments = (req, res, next) => {
 
     //La requête SQL pour récupérer les données dans la table comment
-    mysqlconnection.query('SELECT * FROM comment WHERE article_id = ? ORDER BY date_post ASC', req.body.article_id,
+    mysqlconnection.query('SELECT * FROM comment WHERE article_id = ? ORDER BY date_post ASC', req.params.article_id,
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');
