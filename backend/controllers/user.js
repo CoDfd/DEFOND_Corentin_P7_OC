@@ -9,7 +9,7 @@ const mysqlconnection = require('../db/db.mysql');
 //Controller GET One
 exports.getOneUser = (req, res, next) => {
     
-    mysqlconnection.query('SELECT id, pseudo, avatar, date_signup FROM user WHERE id = ?', req.params.id,  
+    mysqlconnection.query('SELECT id, pseudo, date_signup FROM user WHERE id = ?', req.params.id,  
         function (err, result) {
             if (err) {
                 console.log('error 400');

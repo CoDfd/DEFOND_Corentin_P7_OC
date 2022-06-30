@@ -119,6 +119,7 @@ export default {
     flex-direction: column;
     align-items: stretch;
     width : 100%;
+    height : auto;
 
     &__question {
 

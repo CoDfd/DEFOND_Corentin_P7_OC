@@ -81,7 +81,7 @@ export default {
 .welcome-action{
   width : 40%;
   max-width: 900px;
-  height : 50vh ;
+  height : 62vh ;
 
   background-color: #F0F2F5;
   border-radius: 20px;

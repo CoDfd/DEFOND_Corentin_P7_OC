@@ -7,7 +7,7 @@
        
         <nav>
             <div class="nav">
-                <router-link to="/auth/login">
+                <router-link to="/login">
                     <div v-if="lsref === 'login'" class="nav__buttonselected">
                         <p>Login</p>
                     </div>
@@ -17,7 +17,7 @@
                 </router-link>
             </div>
             <div class="nav">
-                <router-link to="/auth/signup">
+                <router-link to="/signup">
                     <div v-if="lsref === 'signup'" class="nav__buttonselected">
                         <p>Signup</p>
                     </div>

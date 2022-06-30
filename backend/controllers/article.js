@@ -92,6 +92,8 @@ exports.getAllArticlesFromOne = (req, res, next) => {
 exports.modifyArticle = (req, res, next) => {
     console.log('--> Passage dans la route PUT <--');
     var newDataArticle = [];
+    console.log(req.params.id);
+
 
     //Récupération de l'article à modifier
     mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.id,  
@@ -101,21 +103,26 @@ exports.modifyArticle = (req, res, next) => {
             res.status(400).json( { error: 'Wrong request' } );
         }else{
             const article = result[0];
+            console.log(result[0].user_id);
+            console.log(req.auth.user_id);
+            console.log(req.auth.user_role);
             if (!article){
                 console.log('error 404 not found');
                 res.status(404).json( { error: 'No such Article!' } );
             } else {
 
                 //Vérification que la demande de modification vient de l'auteur de l'article ou de l'admin
-                if (result[0].user_id !== req.auth.user_id || req.auth.user_role === 1) {
+                if (result[0].user_id !== req.auth.user_id || req.auth.user_role === 0) {
                     console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } 
 
                 //Différenciation des données à récupérer selon si l'image est mise à jour
                 if (req.file){
-                    const filename = article.imageUrl.split('/images/')[1];
-                    fs.unlinkSync(`images/${filename}`);
+                    if (article.imageUrl !== ``) {
+                        const filename = article.imageUrl.split('/images/')[1];
+                        fs.unlinkSync(`images/${filename}`);
+                    }
                     newDataArticle.push(req.body.title, req.body.description, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, req.params.id);  
                 } else {
                     newDataArticle.push(req.body.title, req.body.description, article.imageUrl, req.params.id);
