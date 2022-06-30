@@ -14,7 +14,7 @@
         <nav>
             <div class="nav">
                 <router-link to="/">
-                    <div class="nav__button">
+                    <div @click="logout" class="nav__button">
                         <p>Logout</p>
                     </div>
                 </router-link>
@@ -35,7 +35,13 @@
 
 <script>
 export default {
-  name: 'HeaderPages'
+  name: 'HeaderPages',
+  methods :{
+    logout : function () {
+        localStorage.clear();
+        this.$router.replace('accueil');
+    }
+  }
 }
 </script>
 

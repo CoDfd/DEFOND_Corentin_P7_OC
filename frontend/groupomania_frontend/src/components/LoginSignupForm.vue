@@ -83,7 +83,11 @@ export default {
         .then ((res) => {
           console.log(res);
           const token = res.data.token;
+          const userId = res.data.user_id;
+          const userRole = res.data.user_role;
           localStorage.setItem('token', token);
+          localStorage.setItem('user_id', userId);
+          localStorage.setItem('admin', userRole);
           this.$router.replace('home');
         })
         .catch(() => {

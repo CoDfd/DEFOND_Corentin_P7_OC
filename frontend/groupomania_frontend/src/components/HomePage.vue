@@ -45,6 +45,7 @@ export default {
         //Collecting of the token
         const token = localStorage.getItem('token');
         console.log(token);
+        if (token != null) {
         //requete axios GET All
         axios.get(`http://localhost:3000/api/articles/`, { headers: { authorization: `Bearer ${token}` } })
           .then(response =>{
@@ -55,6 +56,9 @@ export default {
             console.log(`Erreur`); // Une erreur est survenue
             alert(`Erreur de requête API (GET)`);
           })
+        } else {
+          this.$router.replace('/');
+        }
       }
     },
     created : function () {

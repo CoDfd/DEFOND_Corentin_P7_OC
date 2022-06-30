@@ -122,6 +122,7 @@ exports.login = (req, res, next) => {
                             console.log(token);
                             res.status(200).json({
                                 user_id: user.id,
+                                user_role : user.admin,
                                 token: token 
                             });
                         })

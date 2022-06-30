@@ -5,6 +5,7 @@
 
       <div class="home__scroll__container">
         <ArticleComponent :article="article"/>
+        <ArticleModify :article="article"/>
       </div>
 
     </div>
@@ -15,12 +16,14 @@
 <script>
 import axios from 'axios';
 import ArticleComponent from '@/components/ArticleComponent.vue'
+import ArticleModify from '@/components/ArticleModify.vue'
 
 export default {
     
   name: "ArticlePage",
   components: { 
-      ArticleComponent
+      ArticleComponent,
+      ArticleModify
   },
   data () {
     return {
@@ -49,7 +52,7 @@ export default {
         })
     },*/
 
-    getArticle : function () {
+    async getArticle  () {
       console.log('on rentre dans get One');
       //Collection of the webpage URL into a string
       const urlProductString = window.location.href;
@@ -61,15 +64,17 @@ export default {
       //Collecting of the token
       const token = localStorage.getItem('token');
       console.log(token);
-      /*try {
+      try {
         const articledata = await axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } });
+        console.log('-->réponse à la requete get one');
+        console.log(articledata);        
         this.article = articledata.data;
       }
       catch (e) {
         this.errors.push(e)
-      }*/
+      }
        
-      axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } }) 
+      /*axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } }) 
         .then(response =>{
           console.log('-->réponse à la requete get one');
           console.log(response);
@@ -78,12 +83,12 @@ export default {
         .catch(() => {
           console.log(`Erreur`); // Une erreur est survenue
           alert(`Erreur de requête API (GET)`);
-        })
+        })*/
     }
   },
 
-  created : function() {
-    this.getArticle();
+  async created () {
+    await this.getArticle();
     
   }
 
@@ -128,6 +133,7 @@ export default {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
+      gap : 30px;
     }
   }
 

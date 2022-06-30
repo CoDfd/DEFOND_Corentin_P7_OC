@@ -78,7 +78,7 @@ exports.deleteComment = (req, res, next) => {
             } else {
 
                 //Vérification que la demande de modification vient de l'auteur de l'article ou l'admin
-                if (result[0].user_id !== req.auth.user_id || req.auth.user_role === 0 ) {
+                if (result[0].user_id !== req.auth.user_id && req.auth.user_role === 0 ) {
                     console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } else {

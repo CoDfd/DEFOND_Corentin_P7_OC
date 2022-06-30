@@ -1,14 +1,14 @@
 <template>
   <div class="post">
 
-    <form method="post" @submit.prevent="postArticle" class="post__form">
+    <form method="put" @submit.prevent="modifyArticle" class="post__form">
           
       <div class="post__form__text">
-        <textarea name="title" v-model="title" id="title" placeholder="Sujet de votre post" rows="1"></textarea>
+        <textarea name="title" v-model="title" id="title" placeholder="titre modifié" rows="1"></textarea>
       </div>
 
       <div class="post__form__text">
-        <textarea name="description" v-model="description" id="description" placeholder="Quoi de neuf ?" rows="4"></textarea>
+        <textarea name="description" :value="description" id="description" placeholder="article modifié" rows="6"></textarea>
       </div>
 
       <div class="post__form__bottom">
@@ -20,8 +20,8 @@
         </div>
 
         <div class="post__form__submit">
-          <label for="submit"><p>Publier</p></label>
-          <input type="submit" value="publier" id="submit">
+          <label for="submit"><p>Modifier</p></label>
+          <input type="submit" value="modifier" id="submit">
         </div>
 
       </div>
@@ -38,7 +38,13 @@ import axios from 'axios';
 //import ButtonRename from '@/components/ButtonRename.vue'
 
 export default {
-    name: "HomePost",
+    name: "ArticleModify",   
+    props: {
+      article : {
+        type : Object,
+        required: true
+      }
+    },
     
     data () {
       return {
@@ -62,14 +68,31 @@ export default {
       upload : function (event) {
         this.image = event.target.files[0];
       },
-      postArticle : function () {
-        console.log("--- on rentre dans la route POST article");
+
+      async actuData () {
+        console.log(this.article.title);
+        this.title = this.article.title;
+        this.description = this.article.description;
+      },
+
+      modifyArticle : function () {
+        console.log("--- on rentre dans la route PUT article");
         //Collecting of the token
         const token = localStorage.getItem('token');
         //initialisation de la requête
-        console.log("initialisation POST");
+        console.log("initialisation PUT");
         var article;
         var config = {};
+        var articleId = this.article.id;
+        if (articleId == null){
+          //Collection of the webpage URL into a string
+          const urlProductString = window.location.href;
+          //Converting the string into an URL
+          const urlArticle = urlProductString.replace(/\/$/, "");
+          //Collecting the id of the product
+          articleId = urlArticle.substring (urlArticle.lastIndexOf( "/" )+1 );
+        } 
+        console.log(articleId);
 
         if (this.image != null) {
           console.log("il y a une image");
@@ -99,7 +122,7 @@ export default {
         console.log(config);
         console.log(article);
 
-        axios.post(`http://localhost:3000/api/articles`, article, config)
+        axios.put(`http://localhost:3000/api/articles/${articleId}`, article, config)
           .then ((res) => {
             console.log(res);
             this.$router.go();
@@ -108,10 +131,11 @@ export default {
             this.errors.push(e);
             alert(`Erreur de requête API`);
           })
-
-          
-
       }
+    },
+
+    async beforeMount () {
+      await this.actuData();
     }
 }
 </script>
@@ -120,9 +144,8 @@ export default {
 
 <style scoped lang="scss">
 .post {
-  width : 90%;
+  width : 100%;
   max-width : 900px;
-  height : 20vh;
   background-color:white;
   border-radius: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);

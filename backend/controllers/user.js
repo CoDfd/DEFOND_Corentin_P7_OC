@@ -45,7 +45,7 @@ exports.deleteUser = (req, res, next) => {
             } else {
 
                 //Vérification que la demande de suppression vient de l'utilisateur lui même ou de l'admin
-                if (result[0].user_id !== req.auth.user_id || req.auth.user === 1) {
+                if (result[0].user_id !== req.auth.user_id && req.auth.user === 0) {
                     console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } else {
