@@ -3,8 +3,6 @@
 
     <div class="home__scroll">
 
-      <div>Item: {{ $route.params.id }}</div>
-
       <div class="home__scroll__container">
         <ArticleComponent :article="article"/>
       </div>
@@ -31,12 +29,12 @@ export default {
     }
   },
   methods: {
-    getComments: function (token, article) {
+    /*getComments: function (token, article) {
       console.log('-->on rentre dans la requete get comments');
       console.log(article);
-      /*//Collecting of the token
+      //Collecting of the token
       const token = localStorage.getItem('token');
-      //init request*/
+      //init request
       const articleId = this.article.id;
       console.log(articleId);
       axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } })
@@ -49,25 +47,33 @@ export default {
           console.log(`Erreur comments`); // Une erreur est survenue
           alert(`Erreur de requête API (GET)`);
         })
-    },
+    },*/
 
-    getArticle: function () {
+    getArticle : function () {
+      console.log('on rentre dans get One');
       //Collection of the webpage URL into a string
       const urlProductString = window.location.href;
       //Converting the string into an URL
       const urlArticle = urlProductString.replace(/\/$/, "");
       //Collecting the id of the product
       const idArticle = urlArticle.substring (urlArticle.lastIndexOf( "/" )+1 );
+      console.log(idArticle);
       //Collecting of the token
       const token = localStorage.getItem('token');
       console.log(token);
-      axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } })
+      /*try {
+        const articledata = await axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } });
+        this.article = articledata.data;
+      }
+      catch (e) {
+        this.errors.push(e)
+      }*/
+       
+      axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } }) 
         .then(response =>{
           console.log('-->réponse à la requete get one');
           console.log(response);
           this.article = response.data;
-          console.log('-->on va lancer la requete get comments');
-          this.getComments(token, response.data);
         })
         .catch(() => {
           console.log(`Erreur`); // Une erreur est survenue

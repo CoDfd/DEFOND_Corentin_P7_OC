@@ -14,7 +14,7 @@ exports.createComment = (req, res, next) => {
     function (err, result) {
         if (err) {
             console.log(err);
-            res.status(400).json({ error });
+            res.status(400).json({ err });
         }else{
             res.status(201).json({message : `Commentaire enregistré !`});
             }
@@ -26,7 +26,7 @@ exports.createComment = (req, res, next) => {
 exports.getAllComments = (req, res, next) => {
 
     //La requête SQL pour récupérer les données dans la table comment
-    mysqlconnection.query('SELECT * FROM comment WHERE article_id = ? ORDER BY date_post ASC', req.params.article_id,
+    mysqlconnection.query('SELECT comment.id, comment.article_id, comment.description, comment.date_post, user.pseudo FROM comment JOIN user WHERE comment.user_id = user.id AND comment.article_id = ? ORDER BY comment.date_post DESC', req.params.article_id,
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');

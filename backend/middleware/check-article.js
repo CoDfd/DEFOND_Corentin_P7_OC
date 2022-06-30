@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
     try {
         //checks
         console.log('--> entrée dans le middleware de check pour les commentaires');
+        console.log(req.params.article_id);
 
         //findone si l'article est en bdd
         mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.article_id,     

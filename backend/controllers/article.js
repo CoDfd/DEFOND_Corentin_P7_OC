@@ -28,7 +28,7 @@ exports.createArticle = (req, res, next) => {
     function (err, result) {
         if (err) {
             console.log(err);
-            res.status(400).json({ error });
+            res.status(400).json({ err });
         }else{
             res.status(201).json({message : `Article enregistré !`});
             }
@@ -40,7 +40,7 @@ exports.createArticle = (req, res, next) => {
 //Controller GET all
 exports.getAllArticles = (req, res, next) => {
     
-    mysqlconnection.query('SELECT * FROM article ORDER BY date_post DESC', 
+    mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id ORDER BY date_post DESC', 
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');
@@ -55,7 +55,7 @@ exports.getAllArticles = (req, res, next) => {
 //Controller GET One
 exports.getOneArticle = (req, res, next) => {
     console.log(req.params.id);
-    mysqlconnection.query('SELECT * FROM article WHERE id = ?', req.params.id,  
+    mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id AND article.id = ?', req.params.id,  
         function (err, result) {
             if (err) {
                 console.log('error 400');

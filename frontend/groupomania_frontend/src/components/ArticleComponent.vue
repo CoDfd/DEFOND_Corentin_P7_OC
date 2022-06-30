@@ -3,7 +3,7 @@
 
     <div class="article__header">
       <h2>{{article.title}}</h2>
-      <p> Par <span>{{article_author}}</span>, le {{convertDate.day}} à {{convertDate.hour}}</p>
+      <p class="article__author"> Par <span class="article__author__name">{{article.pseudo}}</span>, le {{convertDate(article).day}} à {{convertDate(article).hour}}</p>
     </div>
 
     <div class="article__description">
@@ -38,15 +38,15 @@
 
       <div class="article__comment__comments">
 
-        <div class="article__comment__comments__unit">
-          <p class="comment_author"><span class="comment_author__name">"Name"</span>, le "Date string" :</p>
-          <p class="comment_description">"c'est le commentaire ici. Lorem ipsum etc etc ..."</p>
+        <div v-for="comment in comments" :key="comment.id" class="article__comment__comments__unit">
+          <p class="comment_author"><span class="comment_author__name">{{comment.pseudo}}</span>, le {{convertDate(comment).day}} à {{convertDate(comment).hour}} :</p>
+          <p class="comment_description">{{comment.description}}</p>
         </div>
 
-        <div class="article__comment__comments__unit">
+        <!--<div class="article__comment__comments__unit">
           <p class="comment_author"><span class="comment_author__name">"Name"</span>, le "Date string" :</p>
           <p class="comment_description">"c'est le commentaire ici. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "</p>
-        </div>
+        </div>-->
 
       </div>
 
@@ -70,31 +70,56 @@ export default {
     },
     data () {
       return {
-        article_author:"",
         comments:[]
       }
     },
     components: {  },
-    computed : {
-      convertDate() {
-        const date_result = new Date(this.article.date_post);
-        const article_date = {
+    /*computed : {
+      convertDate(item) {
+        const date_result = new Date(item.date_post);
+        const item_date = {
           day : date_result.toLocaleDateString('fr-FR'),
           hour : date_result.toLocaleTimeString('fr-FR')
         }
-        return article_date;
+        return item_date;
       }
-    },
+    },*/
     methods : {
-      getComments: function () {
+      convertDate: function (item) {
+        const date_result = new Date(item.date_post);
+        const item_date = {
+          day : date_result.toLocaleDateString('fr-FR'),
+          hour : date_result.toLocaleTimeString('fr-FR')
+        }
+        return item_date;
+      }, 
+
+      async getComments () {
+        //init request
+        var articleId = this.article.id;
+        if (articleId == null){
+          //Collection of the webpage URL into a string
+          const urlProductString = window.location.href;
+          //Converting the string into an URL
+          const urlArticle = urlProductString.replace(/\/$/, "");
+          //Collecting the id of the product
+           articleId = urlArticle.substring (urlArticle.lastIndexOf( "/" )+1 );
+        } 
+        console.log(articleId);
         console.log('-->on rentre dans la requete get comments');
         //Collecting of the token
         const token = localStorage.getItem('token');
-        //init request
-        const articleId = this.article.id;
-        console.log(articleId);
-        axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } })
-          .then(response =>{
+
+
+
+        try {
+          const commentsdata = await axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } });
+          this.comments = commentsdata.data;
+        } catch (e) {
+          this.errors.push(e)
+        }
+          
+        /*  .then(response =>{
             console.log('-->réponse à la requete get comments');
             console.log(response);
             this.comments = response.data;
@@ -102,27 +127,13 @@ export default {
           .catch(() => {
             console.log(`Erreur comments`); // Une erreur est survenue
             alert(`Erreur de requête API (GET)`);
-          })
-      },      
-
-      getArticleAuthor : function () {
-        //Collecting of the token
-        const token = localStorage.getItem('token');
-        //init de la requête
-        const userId = this.article.user_id;
-        axios.get(`http://localhost:3000/api/users/${userId}`, { headers: { authorization: `Bearer ${token}` } })
-        .then(response =>{
-          this.article_author = response.data.pseudo;
-        })
-        .catch(() => {
-          console.log(`Erreur`); // Une erreur est survenue
-          alert(`Erreur de requête API`);
-        })
+          })*/
       }
+      
     }, 
-  beforeUpdate : function () {
+  mounted : function () {
+    console.log("hello");
     this.getComments();
-    this.getArticleAuthor();
     console.log("tchao");
   }
 }
@@ -160,6 +171,13 @@ export default {
     & p{
       margin : 0;
       padding : 0 10px 0 30px;
+    }
+  }
+
+  &__author {
+    font-style: italic;
+    &__name {
+      font-weight: 600;
     }
   }
 
