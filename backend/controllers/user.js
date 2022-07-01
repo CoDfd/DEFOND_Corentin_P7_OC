@@ -30,7 +30,7 @@ exports.getOneUser = (req, res, next) => {
 //Controller GET All From One
 exports.getAllArticlesFromOne = (req, res, next) => {
     
-    mysqlconnection.query('SELECT * FROM article WHERE user_id = ? ORDER BY date_post DESC', req.params.id,
+    mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id AND user_id = ? ORDER BY date_post DESC', req.params.id,
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');
