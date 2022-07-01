@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="article__comment">
+    <div v-if="showComment" class="article__comment">
 
 
       <form method="post" @submit.prevent="postComment"  class="article__comment__form">
@@ -48,11 +48,6 @@
           <p class="comment_author"><span class="comment_author__name">{{comment.pseudo}}</span>, le {{convertDate(comment).day}} à {{convertDate(comment).hour}} :</p>
           <p class="comment_description">{{comment.description}}</p>
         </div>
-
-        <!--<div class="article__comment__comments__unit">
-          <p class="comment_author"><span class="comment_author__name">"Name"</span>, le "Date string" :</p>
-          <p class="comment_description">"c'est le commentaire ici. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "</p>
-        </div>-->
 
       </div>
 
@@ -75,6 +70,10 @@ export default {
       article : {
         type : Object,
         required: true
+      },
+      showComment : {
+        type : Boolean,
+        default : true
       }
     },
     data () {
@@ -115,7 +114,7 @@ export default {
         return item_date;
       }, 
 
-      async getComments () {
+      getComments () {
         //init request
         var articleId = this.article.id;
         if (articleId == null){
@@ -133,15 +132,17 @@ export default {
 
 
 
-        try {
+        /*try {
           const commentsdata = await axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } });
           this.comments = commentsdata.data;
           console.log(this.comments);
         } catch (e) {
           this.errors.push(e)
-        }
+        }*/
           
-        /*  .then(response =>{
+          
+          axios.get(`http://localhost:3000/api/comments/${articleId}`, { headers: { authorization: `Bearer ${token}` } }) 
+          .then(response =>{
             console.log('-->réponse à la requete get comments');
             console.log(response);
             this.comments = response.data;
@@ -149,7 +150,7 @@ export default {
           .catch(() => {
             console.log(`Erreur comments`); // Une erreur est survenue
             alert(`Erreur de requête API (GET)`);
-          })*/
+          })
       },
 
       postComment : function () {
@@ -208,9 +209,8 @@ export default {
             console.log(res);
             this.$router.go();
           })
-          .catch ((e) => {
-            this.errors.push(e);
-            alert(`Erreur de requête API`);
+          .catch (() => {
+            alert(`Article déjà liké`);
           })
       },
 
@@ -263,7 +263,6 @@ export default {
 
 <style scoped lang="scss">
 .article {
-  z-index: 0;
   width : 100%;
   max-width : 900px;
   background-color:white;

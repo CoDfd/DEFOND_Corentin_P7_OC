@@ -134,6 +134,7 @@ export default {
   align-items: flex-start;
 
   &__form{
+    
     height : 100%;
     width: 100%;
     padding-left: 2%;
@@ -201,7 +202,8 @@ export default {
       }
 
       & input {
-        visibility: hidden;
+        display : none;
+        margin : 0;
       }
 
       &__name {
@@ -210,9 +212,6 @@ export default {
         padding-left : 5px;
         font-size: 70%;
         font-style :italic;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        flex-wrap: nowrap;
       }
     }
 
@@ -262,10 +261,36 @@ export default {
   }
 }
 
-@media (max-width : 767px){
-  .post {
-    width : 99%;
+@media (min-width : 768px){
+
+.post {
+  &__form {
+    &__img{
+      &__name{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        flex-wrap: nowrap;
+      }
+    }
   }
+}
+
+}
+
+@media (max-width : 767px){
+
+.post {
+  &__form {
+    &__img{
+      &__name{
+        text-overflow: ellipsis;
+        overflow: hidden;
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+
 }
 
 </style>

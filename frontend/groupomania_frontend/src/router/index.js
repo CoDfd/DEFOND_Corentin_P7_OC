@@ -5,6 +5,7 @@ import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView'
 import HomeView from '../views/HomeView'
 import ArticleView from '../views/ArticleView'
+import ProfileView from '../views/ProfileView'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/articles/:id',
     name: 'article_id',
     component: ArticleView
+  },
+  {
+    path: '/users/:user_id',
+    name: 'profile',
+    component: ProfileView
   },
   {
     path: '/about',

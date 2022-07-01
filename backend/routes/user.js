@@ -10,8 +10,10 @@ const auth = require('../middleware/auth');
 
 //route GET one
 router.get('/:id', auth, userCtrl.getOneUser);
+//route GET articles from one
+router.get('/:id/articles', auth, userCtrl.getAllArticlesFromOne)
 //route DELETE
-//router.delete('/:id', auth, userCtrl.deleteUser);
+router.delete('/:id', auth, userCtrl.deleteUser);
 
 
 module.exports = router;

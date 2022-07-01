@@ -77,8 +77,8 @@ header
         & img
         {
            
-            width: 80%;
-            height : 80%;
+            width: 70%;
+            height : 70%;
             object-fit: contain;
         }
     }
@@ -135,12 +135,16 @@ header
     }
 
 }
-@media (min-width: 768px)
+@media (max-width: 768px)
 {
+    header {
+        &__logo {
+            visibility : hidden;
+        }
+    }
     header .logo img
     {
-        width: 70%;
-        height : 70%;
+        display : hidden;
     }
 }
 </style>

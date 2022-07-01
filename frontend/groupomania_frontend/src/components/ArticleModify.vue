@@ -8,7 +8,7 @@
       </div>
 
       <div class="post__form__text">
-        <textarea name="description" :value="description" id="description" placeholder="article modifié" rows="6"></textarea>
+        <textarea name="description" v-model="description" id="description" placeholder="article modifié" rows="6"></textarea>
       </div>
 
       <div class="post__form__bottom">
@@ -69,7 +69,7 @@ export default {
         this.image = event.target.files[0];
       },
 
-      async actuData () {
+      actuData () {
         console.log(this.article.title);
         this.title = this.article.title;
         this.description = this.article.description;
@@ -134,8 +134,8 @@ export default {
       }
     },
 
-    async beforeMount () {
-      await this.actuData();
+    mounted () {
+      this.actuData();
     }
 }
 </script>

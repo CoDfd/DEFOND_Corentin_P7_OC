@@ -42,6 +42,8 @@ export default {
             box-shadow: 0px 5px 10px rgba(0,0,0,0.30),
                         inset 2px 10px 20px rgba(255,255,255,0.65),
                         inset -2px -3px 20px rgba(0,0,0,0.35); 
+            cursor : pointer;
+            
         }
     }
 

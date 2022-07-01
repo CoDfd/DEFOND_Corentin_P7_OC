@@ -27,6 +27,21 @@ exports.getOneUser = (req, res, next) => {
     );
 }
 
+//Controller GET All From One
+exports.getAllArticlesFromOne = (req, res, next) => {
+    
+    mysqlconnection.query('SELECT * FROM article WHERE user_id = ? ORDER BY date_post DESC', req.params.id,
+        function (err, result) {
+            if (err) {
+                console.log('error 400 - lost access');
+                res.status(400).json({ err });
+            }else{
+                res.status(200).json(result);
+            }
+        }
+    );
+}
+
 //Controller DELETE
 exports.deleteUser = (req, res, next) => {
     console.log('--> Passage dans la route DELETE User <--');
@@ -49,17 +64,23 @@ exports.deleteUser = (req, res, next) => {
                     console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } else {
-                    //suppression de la donnée
-                    mysqlconnection.query('DELETE FROM user WHERE id = ?', req.params.id,  
-                    function (err, result) {
-                        if (err) {
-                            console.log('erreur de suppression');
-                            res.status(400).json({ error });
-                        }else{
-                            res.status(200).json('Profil supprimé');
-                            console.log('Profil supprimé');
-                        }
-                    });
+                    if (result[0].user_id === req.auth.user_id && req.auth.user === 1)
+                    {
+                        console.log(`T'es fou t'es admin !`);
+                        res.json( { error: new Error('Admin : do not delete yourself!') } );
+                    } else {
+                        //suppression de la donnée
+                        mysqlconnection.query('DELETE FROM user WHERE id = ?', req.params.id,  
+                        function (err, result) {
+                            if (err) {
+                                console.log('erreur de suppression');
+                                res.status(400).json({ error });
+                            }else{
+                                res.status(200).json('Profil supprimé');
+                                console.log('Profil supprimé');
+                            }
+                        });
+                    }
                 }
             }
 

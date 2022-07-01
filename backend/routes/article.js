@@ -15,7 +15,7 @@ router.get('/', auth, articleCtrl.getAllArticles);
 //route GET one
 router.get('/:id', auth, articleCtrl.getOneArticle);
 //route GET all from one
-router.get('/:user_id', auth, articleCtrl.getAllArticlesFromOne);
+//router.get('/:user_id', auth, articleCtrl.getAllArticlesFromOne);
 //route PUT
 router.put('/:id', auth, multer, articleCtrl.modifyArticle);
 //route DELETE

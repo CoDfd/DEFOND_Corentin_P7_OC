@@ -4,8 +4,9 @@
     <div class="home__scroll">
 
       <div class="home__scroll__container">
-        <ArticleComponent :article="article"/>
-        <ArticleModify :article="article"/>
+        <ArticleComponent v-if="article" :article="article" :showComment="showComment"/>
+        <ButtonRename name="Modifier" v-if="!modify" @click.native.prevent="changeModify()"/>
+        <ArticleModify v-if="article && modify" :article="article"/>
       </div>
 
     </div>
@@ -17,18 +18,22 @@
 import axios from 'axios';
 import ArticleComponent from '@/components/ArticleComponent.vue'
 import ArticleModify from '@/components/ArticleModify.vue'
+import ButtonRename from '@/components/ButtonRename.vue'
 
 export default {
     
   name: "ArticlePage",
   components: { 
       ArticleComponent,
-      ArticleModify
+      ArticleModify,
+      ButtonRename
   },
   data () {
     return {
       article:{},
-      comments : []
+      comments : [],
+      modify : false,
+      showComment : true
     }
   },
   methods: {
@@ -51,8 +56,14 @@ export default {
           alert(`Erreur de requête API (GET)`);
         })
     },*/
+    createComponent : function (){
+      let home__scroll__container = document.getElementsByClassName('home__scroll__container')
+      var newcomponent = document.createElement('ArticleComponent');
+      newcomponent.setAttribute(':article',"article");
+      home__scroll__container.appendChild(newcomponent);
+    },
 
-    async getArticle  () {
+    getArticle  () {
       console.log('on rentre dans get One');
       //Collection of the webpage URL into a string
       const urlProductString = window.location.href;
@@ -64,7 +75,7 @@ export default {
       //Collecting of the token
       const token = localStorage.getItem('token');
       console.log(token);
-      try {
+      /*try {
         const articledata = await axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } });
         console.log('-->réponse à la requete get one');
         console.log(articledata);        
@@ -72,10 +83,10 @@ export default {
       }
       catch (e) {
         this.errors.push(e)
-      }
+      }*/
        
-      /*axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } }) 
-        .then(response =>{
+      axios.get(`http://localhost:3000/api/articles/${idArticle}`, { headers: { authorization: `Bearer ${token}` } }) 
+        .then((response) =>{
           console.log('-->réponse à la requete get one');
           console.log(response);
           this.article = response.data;
@@ -83,7 +94,13 @@ export default {
         .catch(() => {
           console.log(`Erreur`); // Une erreur est survenue
           alert(`Erreur de requête API (GET)`);
-        })*/
+        })
+    },
+
+    changeModify : function () {
+      this.modify = true;
+      this.showComment = false;
+      console.log(this.modify);
     }
   },
 

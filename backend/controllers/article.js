@@ -74,9 +74,9 @@ exports.getOneArticle = (req, res, next) => {
 }
 
 //Controller GET All From One
-exports.getAllArticlesFromOne = (req, res, next) => {
+/*exports.getAllArticlesFromOne = (req, res, next) => {
     
-    mysqlconnection.query('SELECT * FROM article WHERE user_id = ? ORDER BY date_post ASC', req.params.user_id,
+    mysqlconnection.query('SELECT * FROM article WHERE user_id = ? ORDER BY date_post DESC', req.params.user_id,
         function (err, result) {
             if (err) {
                 console.log('error 400 - lost access');
@@ -86,7 +86,7 @@ exports.getAllArticlesFromOne = (req, res, next) => {
             }
         }
     );
-}
+}*/
 
 //Controller PUT
 exports.modifyArticle = (req, res, next) => {

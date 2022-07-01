@@ -3,7 +3,7 @@
 
     <div class="home__scroll">
 
-      <HomePost/>
+      <ProfileComponent/>
 
       <!--<div class="home__scroll__article"  v-for="item in articles" :key="item.id">-->
         
@@ -22,16 +22,16 @@
 
 <script>
 import axios from 'axios';
-import HomePost from '@/components/HomePost.vue'
 import ArticleComponent from '@/components/ArticleComponent.vue'
+import ProfileComponent from '@/components/ProfileComponent.vue'
 
 export default {
     
-    name: "HomePage",
+    name: "ProfilePage",
 
     components: { 
-      HomePost,
-      ArticleComponent
+      ArticleComponent,
+      ProfileComponent
    },
 
    data () {
@@ -40,30 +40,36 @@ export default {
       }
     },
     methods : {
-      getArticles : function () {
-        console.log("on entre dans getArticles")
+      getArticlesFromOne : function () {
+        console.log("on entre dans getArticlesFromOne")
+        //Collection of the webpage URL into a string
+        const urlProductString = window.location.href;
+        //Converting the string into an URL
+        const urlUser = urlProductString.replace(/\/$/, "");
+        //Collecting the id of the product
+        const userId = urlUser.substring (urlUser.lastIndexOf( "/" )+1 );
+        console.log(userId);
         //Collecting of the token
         const token = localStorage.getItem('token');
         console.log(token);
         if (token != null) {
-        //requete axios GET All
-        axios.get(`http://localhost:3000/api/articles/`, { headers: { authorization: `Bearer ${token}` } })
-          .then(response =>{
-            console.log(response.data);
-            this.articles = response.data;
-          })
-          .catch(() => {
-            console.log(`Erreur`); // Une erreur est survenue
-            alert(`Erreur de requête API (GET)`);
-          })
+          //requete axios GET All
+          axios.get(`http://localhost:3000/api/users/${userId}/articles`, { headers: { authorization: `Bearer ${token}` } })
+            .then(response =>{
+              console.log(response.data);
+              this.articles = response.data;
+            })
+            .catch(() => {
+              console.log(`Erreur`); // Une erreur est survenue
+              alert(`Erreur de requête API (GET)`);
+            })
         } else {
           this.$router.replace('/');
         }
       }
     },
     created : function () {
-      console.log("created");
-      this.getArticles();
+      this.getArticlesFromOne();
     }
 
 }
@@ -87,6 +93,7 @@ export default {
   &__scroll {
     width : 70%;
     height : auto;
+    min-width : 767px;
     margin : 0;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -116,19 +123,5 @@ export default {
 
 }
 
-@media (min-width : 768px) {
-  .home__scroll {
-    min-width : 767px;
-  }
-}
-
-@media (max-width: 767px)
-{
-  .home {
-    &__scroll {
-      width : 95%;
-    }
-  }
-}
 
 </style>

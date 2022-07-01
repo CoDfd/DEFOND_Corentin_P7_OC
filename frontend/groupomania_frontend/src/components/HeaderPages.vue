@@ -20,7 +20,7 @@
                 </router-link>
             </div>
             <div class="nav">
-                <router-link to="/:profil">
+                <router-link :to="{ name: 'profile', params: { user_id: userId }}">
 
                     <div class="nav__button">
                         <p>Profile</p>
@@ -36,11 +36,23 @@
 <script>
 export default {
   name: 'HeaderPages',
+  data () {
+    return {
+        userId:""
+    }
+  },
   methods :{
     logout : function () {
         localStorage.clear();
         this.$router.replace('accueil');
+    },
+
+    getUserId : function () {
+        this.userId = localStorage.getItem('user_id');
     }
+  },
+  beforeMount : function () {
+    this.getUserId();
   }
 }
 </script>
@@ -81,9 +93,8 @@ header
 
         & img
         {
-           
-            width: 80%;
-            height : 80%;
+            width: 70%;
+            height : 70%;
             object-fit: contain;
         }
 
@@ -110,6 +121,7 @@ header
         justify-content: space-between;
         align-items: stretch;
         margin : 0;
+        height : auto;
 
         & .nav {
             text-align: center;
@@ -157,12 +169,46 @@ header
     }
 
 }
-@media (min-width: 768px)
+@media (max-width: 768px)
 {
-    header .logo img
-    {
-        width: 70%;
-        height : 70%;
+header {
+    width : 100%;
+    height : 100px;
+
+    &  .logo {
+        flex-direction :row-reverse;
+        & img
+        {
+            visibility : hidden;
+        }
+        & .home_icon {
+            font-size:40px;
+            padding : 10px;
+            & .fa-user {
+                font-size:40px; 
+            }
+        }
     }
+
+    & nav {
+        width : auto;
+        padding : 0;
+        & .nav {
+            width : auto;
+            min-width: 50px;
+
+            &__button {
+                width : auto;
+                display : flex;
+                align-items: flex-end;
+                & p {
+                    margin : 0;
+                    width : auto;
+                    padding : 10px;
+                }
+            }
+        }
+    }
+}
 }
 </style>
