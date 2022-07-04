@@ -94,10 +94,11 @@ exports.login = (req, res, next) => {
         function (err, result) {
             if (err) {
                 console.log(err);
-                res.status(401).json({ error : 'Utilisateur non trouvé !'});
+                res.status(401).json({ erreur : 'Utilisateur non trouvé !'});
             } else {
                 if (result == 0) {
-                    return res.status(404).json({ error: 'Utilisateur inexistant dans la base de donnée !'});
+                    console.log('pas dans bdd')
+                    return res.status(404).json({erreur :'Utilisateur inexistant dans la base de donnée !'});
                 } else {
                     console.log(`Utilisateur ${result[0].pseudo} trouvé`);
                     console.log(result[0]);
@@ -142,7 +143,6 @@ exports.logout = (req, res, next) => {
     jwt.sign(token, " ", { expiresIn: `1ms` }, (logout, err) => {
         if (logout) {
             res.json({ status : 'Bye !'});
-            //res.redirect('/'); 
         } else {
             res.status(400).json({error :'Unable to log out'});
         }

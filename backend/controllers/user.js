@@ -33,7 +33,6 @@ exports.getAllArticlesFromOne = (req, res, next) => {
     mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id AND user_id = ? ORDER BY date_post DESC', req.params.id,
         function (err, result) {
             if (err) {
-                console.log('error 400 - lost access');
                 res.status(400).json({ err });
             }else{
                 res.status(200).json(result);
@@ -44,40 +43,32 @@ exports.getAllArticlesFromOne = (req, res, next) => {
 
 //Controller DELETE
 exports.deleteUser = (req, res, next) => {
-    console.log('--> Passage dans la route DELETE User <--');
-
     //Récupération du user à supprimer
     mysqlconnection.query('SELECT * FROM user WHERE id = ?', req.params.id,  
     function (err, result) {
         if (err) {
-            console.log('error wrong way');
             res.status(400).json( { error: 'Wrong request' } );
         }else{
             const user = result[0];
             if (!user){
-                console.log('error 404 not found');
                 res.status(404).json( { error: 'No such User!' } );
             } else {
 
                 //Vérification que la demande de suppression vient de l'utilisateur lui même ou de l'admin
                 if (result[0].user_id !== req.auth.user_id && req.auth.user === 0) {
-                    console.log('Unauthorized request!');
                     res.status(400).json( { error: new Error('Unauthorized request!') } );
                 } else {
                     if (result[0].user_id === req.auth.user_id && req.auth.user === 1)
                     {
-                        console.log(`T'es fou t'es admin !`);
                         res.json( { error: new Error('Admin : do not delete yourself!') } );
                     } else {
                         //suppression de la donnée
                         mysqlconnection.query('DELETE FROM user WHERE id = ?', req.params.id,  
                         function (err, result) {
                             if (err) {
-                                console.log('erreur de suppression');
                                 res.status(400).json({ error });
                             }else{
                                 res.status(200).json('Profil supprimé');
-                                console.log('Profil supprimé');
                             }
                         });
                     }

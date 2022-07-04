@@ -5,7 +5,7 @@
 
       <div class="home__scroll__container">
         <ArticleComponent v-if="article" :article="article" :showComment="showComment"/>
-        <ButtonRename name="Modifier" v-if="!modify" @click.native.prevent="changeModify()"/>
+        <ButtonRename name="Modifier" v-if="!modify && (userId == article.user_id || admin == 1)" @click.native.prevent="changeModify()"/>
         <ArticleModify v-if="article && modify" :article="article"/>
       </div>
 
@@ -33,7 +33,9 @@ export default {
       article:{},
       comments : [],
       modify : false,
-      showComment : true
+      showComment : true,
+      userId : localStorage.getItem('user_id'),
+      admin : localStorage.getItem('admin')
     }
   },
   methods: {

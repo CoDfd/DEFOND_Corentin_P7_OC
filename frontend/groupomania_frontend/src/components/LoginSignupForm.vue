@@ -64,9 +64,9 @@ export default {
           alert(res.data.message);
           this.$router.push('login');
         })
-        .catch(() => {
-          console.log(`Erreur`); // Une erreur est survenue
-          alert(`Erreur de requête API`);
+        .catch((e) => {
+          // Une erreur est survenue
+          alert(e.response.data.erreur);
         })
     },
 
@@ -90,9 +90,9 @@ export default {
           localStorage.setItem('admin', userRole);
           this.$router.replace('home');
         })
-        .catch(() => {
-          console.log(`Erreur`); // Une erreur est survenue
-          alert(`Erreur de requête API`);
+        .catch((e) => {
+          // Une erreur est survenue
+          alert(e.response.data.erreur);
         })
     },
 

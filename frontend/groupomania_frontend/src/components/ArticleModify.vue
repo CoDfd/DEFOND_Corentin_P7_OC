@@ -1,40 +1,42 @@
 <template>
-  <div class="post">
 
-    <form method="put" @submit.prevent="modifyArticle" class="post__form">
-          
-      <div class="post__form__text">
-        <textarea name="title" v-model="title" id="title" placeholder="titre modifié" rows="1"></textarea>
-      </div>
+    <div class="post">
 
-      <div class="post__form__text">
-        <textarea name="description" v-model="description" id="description" placeholder="article modifié" rows="6"></textarea>
-      </div>
-
-      <div class="post__form__bottom">
-
-        <div class="post__form__img">
-          <label for="image_upload"><p><font-awesome-icon icon="fa-solid fa-image" /> Ajouter une image</p></label>
-          <div class="post__form__img__name">{{imageName}}</div>
-          <input type="file" @change="upload($event)" id="image_upload" name="image_upload" accept=".jpg, .jpeg, .png, .gif">
+      <form method="put" @submit.prevent="modifyArticle" class="post__form">
+            
+        <div class="post__form__text">
+          <textarea name="title" v-model="title" id="title" placeholder="titre modifié" rows="1"></textarea>
         </div>
 
-        <div class="post__form__submit">
-          <label for="submit"><p>Modifier</p></label>
-          <input type="submit" value="modifier" id="submit">
+        <div class="post__form__text">
+          <textarea name="description" v-model="description" id="description" placeholder="article modifié" rows="6"></textarea>
         </div>
 
-      </div>
+        <div class="post__form__bottom">
+
+          <div class="post__form__img">
+            <label for="image_upload"><p><font-awesome-icon icon="fa-solid fa-image" /> Ajouter une image</p></label>
+            <div class="post__form__img__name">{{imageName}}</div>
+            <input type="file" @change="upload($event)" id="image_upload" name="image_upload" accept=".jpg, .jpeg, .png, .gif">
+          </div>
+
+          <div class="post__form__submit">
+            <label for="submit"><p>Modifier</p></label>
+            <input type="submit" value="modifier" id="submit">
+          </div>
+
+        </div>
 
 
-    </form>
+      </form>
 
-  </div>
+    </div>
+
+
 </template>
 
 <script>
 import axios from 'axios';
-
 //import ButtonRename from '@/components/ButtonRename.vue'
 
 export default {
@@ -45,12 +47,14 @@ export default {
         required: true
       }
     },
+
     
     data () {
       return {
         title : "",
         description : "",
-        image : null
+        image : null,
+        modify : false
       }
     },
 
@@ -128,7 +132,8 @@ export default {
             this.$router.go();
           })
           .catch ((e) => {
-            this.errors.push(e);
+            console.log(e);
+            this.errors.push(e.respone.data.error);
             alert(`Erreur de requête API`);
           })
       }
@@ -143,6 +148,8 @@ export default {
 
 
 <style scoped lang="scss">
+
+
 .post {
   width : 100%;
   max-width : 900px;

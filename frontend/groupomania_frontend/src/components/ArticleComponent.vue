@@ -246,15 +246,9 @@ export default {
       
     }, 
 
-  /*Create : function () {
-    this.getAuth();
-  },*/
-
   mounted : function () {
-    console.log("hello");
     this.getAuth();
     this.getComments();
-    console.log("tchao");
   }
 }
 </script>
