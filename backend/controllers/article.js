@@ -28,7 +28,7 @@ exports.createArticle = (req, res, next) => {
     function (err, result) {
         if (err) {
             console.log(err);
-            res.status(400).json({ err });
+            res.status(500).json({ err });
         }else{
             res.status(201).json({message : `Article enregistré !`});
             }
@@ -43,8 +43,7 @@ exports.getAllArticles = (req, res, next) => {
     mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id ORDER BY date_post DESC', 
         function (err, result) {
             if (err) {
-                console.log('error 400 - lost access');
-                res.status(400).json({ error });
+                res.status(500).json({ error });
             }else{
                 res.status(200).json(result);
             }
@@ -58,8 +57,7 @@ exports.getOneArticle = (req, res, next) => {
     mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id AND article.id = ?', req.params.id,  
         function (err, result) {
             if (err) {
-                console.log('error 400');
-                res.status(404).json({ error: 'Bad request' });
+                res.status(500).json({ error: 'Bad request' });
             }else{
                 if (!result[0]) {
                     console.log('error 404 not found');
@@ -100,7 +98,7 @@ exports.modifyArticle = (req, res, next) => {
     async function (err, result) {
         if (err) {
             console.log('error wrong way');
-            res.status(400).json( { error: 'Wrong request' } );
+            res.status(500).json( { error: new Error ('Wrong request') } );
         }else{
             const article = result[0];
             console.log(result[0].user_id);
@@ -108,13 +106,13 @@ exports.modifyArticle = (req, res, next) => {
             console.log(req.auth.user_role);
             if (!article){
                 console.log('error 404 not found');
-                res.status(404).json( { error: 'No such Article!' } );
+                res.status(404).json( { error: new Error ('No such Article!') } );
             } else {
 
                 //Vérification que la demande de modification vient de l'auteur de l'article ou de l'admin
                 if (result[0].user_id !== req.auth.user_id && req.auth.user_role === 0) {
                     console.log('Unauthorized request!');
-                    res.status(400).json( { error: new Error('Unauthorized request!') } );
+                    res.status(401).json( { error: new Error('Unauthorized request!') } );
                 } else {
 
                     //Différenciation des données à récupérer selon si l'image est mise à jour
@@ -134,7 +132,7 @@ exports.modifyArticle = (req, res, next) => {
                     function (err, result) {
                         if (err) {
                             console.log('erreur de modification');
-                            res.status(400).json({ error });
+                            res.status(500).json({ error });
                         }else{
                             res.status(200).json('Article modifié');
                             console.log('Article modifié');
@@ -155,7 +153,7 @@ exports.deleteArticle = (req, res, next) => {
     function (err, result) {
         if (err) {
             console.log('error wrong way');
-            res.status(400).json( { error: 'Wrong request' } );
+            res.status(500).json( { error: 'Wrong request' } );
         }else{
             const article = result[0];
             if (!article){
@@ -166,7 +164,7 @@ exports.deleteArticle = (req, res, next) => {
                 //Vérification que la demande de modification vient de l'auteur de l'article
                 if (result[0].user_id !== req.auth.user_id && req.auth.user === 0) {
                     console.log('Unauthorized request!');
-                    res.status(400).json( { error: new Error('Unauthorized request!') } );
+                    res.status(401).json( { error: new Error('Unauthorized request!') } );
                 } else {
                     const filename = article.imageUrl.split('/images/')[1];
                     fs.unlink(`images/${filename}`, () => {
@@ -202,7 +200,7 @@ exports.likeArticle = async (req, res, next) => {
     await mysqlconnection.query('SELECT * FROM article WHERE id = ?', articleID,
     function (err, result) {
         if (err) {
-            res.status(400).json( { error: 'Wrong way' } );
+            res.status(500).json( { error: 'Wrong way' } );
         }else{
             if (!result[0]) {
                 res.status(400).json( { error: 'Article innexistant' } );
@@ -213,7 +211,7 @@ exports.likeArticle = async (req, res, next) => {
                 mysqlconnection.query('SELECT * FROM like_articles WHERE user_id = ? AND article_id = ?', data_like_article,  
                 function (err, result) {
                     if (err) {
-                        res.status(400).json( { error: 'Wrong way' } );
+                        res.status(500).json( { error: 'Wrong way' } );
                     }else{
                         const like_article = result[0];
 
@@ -228,7 +226,7 @@ exports.likeArticle = async (req, res, next) => {
                             mysqlconnection.query('INSERT INTO like_articles(user_id, article_id) VALUES (?, ?)', data_like_article, 
                             function (err, result){
                                 if (err) {
-                                    res.status(400).json( { error: 'Like failed' } );
+                                    res.status(500).json( { error: 'Like failed' } );
                                 } else {
                                     //le user donne son like qu'il n'avait jamais donné. Update du nombre de like dans article
                                     like ++;

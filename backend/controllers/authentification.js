@@ -34,7 +34,7 @@ exports.signup = (req, res, next) => {
         function (err, result) {
             if (err) {
                 console.log(err);
-                res.status(400).json({ error });
+                res.status(500).json({ error });
             } else {
                 if (result != 0) {
                     return res.status(401).json({ error: 'Email déjà existant dans la base de donnée !'});
@@ -44,7 +44,7 @@ exports.signup = (req, res, next) => {
                         function (err, result) {
                             if (err) {
                                 console.log(err);
-                                res.status(400).json({ error });
+                                res.status(500).json({ error });
                             } else {
                                 if (result != 0) {
                                     return res.status(401).json({ error: 'Pseudo déjà existant dans la base de donnée !'});
@@ -62,7 +62,7 @@ exports.signup = (req, res, next) => {
                                                 function (err, result) {
                                                     if (err) {
                                                         console.log(err);
-                                                        res.status(400).json({ error });
+                                                        res.status(500).json({ error });
                                                     }else{
                                                         res.json({message : `Utilisateur ${pseudo} enregistré`});
                                                     }
@@ -94,7 +94,7 @@ exports.login = (req, res, next) => {
         function (err, result) {
             if (err) {
                 console.log(err);
-                res.status(401).json({ erreur : 'Utilisateur non trouvé !'});
+                res.status(500).json({ erreur : 'Utilisateur non trouvé !'});
             } else {
                 if (result == 0) {
                     console.log('pas dans bdd')
@@ -142,9 +142,9 @@ exports.logout = (req, res, next) => {
     const token = req.headers.authorization.split(` `)[1];
     jwt.sign(token, " ", { expiresIn: `1ms` }, (logout, err) => {
         if (logout) {
-            res.json({ status : 'Bye !'});
+            res.status(200).json({ status : 'Bye !'});
         } else {
-            res.status(400).json({error :'Unable to log out'});
+            res.status(500).json({error :'Unable to log out'});
         }
     }
     );

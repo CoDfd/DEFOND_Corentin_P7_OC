@@ -14,7 +14,7 @@ exports.createComment = (req, res, next) => {
     function (err, result) {
         if (err) {
             console.log(err);
-            res.status(400).json({ err });
+            res.status(500).json({ err });
         }else{
             res.status(201).json({message : `Commentaire enregistré !`});
             }
@@ -29,8 +29,7 @@ exports.getAllComments = (req, res, next) => {
     mysqlconnection.query('SELECT comment.id, comment.article_id, comment.description, comment.date_post, user.pseudo FROM comment JOIN user WHERE comment.user_id = user.id AND comment.article_id = ? ORDER BY comment.date_post DESC', req.params.article_id,
         function (err, result) {
             if (err) {
-                console.log('error 400 - lost access');
-                res.status(400).json({ error });
+                res.status(500).json({ error });
             }else{
                 res.status(200).json(result);
             }
@@ -45,8 +44,7 @@ exports.getOneComment = (req, res, next) => {
     mysqlconnection.query('SELECT * FROM comment WHERE id = ?', req.params.id,  
         function (err, result) {
             if (err) {
-                console.log('error 400');
-                res.status(404).json({ error: 'Bad request' });
+                res.status(500).json({ error: 'Bad request' });
             }else{
                 if (!result[0]) {
                     console.log('error 404 not found');
@@ -69,7 +67,7 @@ exports.deleteComment = (req, res, next) => {
     function (err, result) {
         if (err) {
             console.log('error wrong way');
-            res.status(400).json( { error: 'Wrong request' } );
+            res.status(500).json( { error: 'Wrong request' } );
         } else {
             const comment = result[0];
             if (!comment){
@@ -80,7 +78,7 @@ exports.deleteComment = (req, res, next) => {
                 //Vérification que la demande de modification vient de l'auteur de l'article ou l'admin
                 if (result[0].user_id !== req.auth.user_id && req.auth.user_role === 0 ) {
                     console.log('Unauthorized request!');
-                    res.status(400).json( { error: new Error('Unauthorized request!') } );
+                    res.status(401).json( { error: new Error('Unauthorized request!') } );
                 } else {
 
                         //suppression de la donnée
@@ -88,7 +86,7 @@ exports.deleteComment = (req, res, next) => {
                         function (err, result) {
                             if (err) {
                                 console.log('erreur de suppression');
-                                res.status(400).json({ error });
+                                res.status(500).json({ error });
                             }else{
                                 res.status(200).json('Commentaire supprimé');
                                 console.log('Commentaire supprimé');

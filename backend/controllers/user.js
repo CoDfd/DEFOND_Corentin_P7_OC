@@ -12,8 +12,7 @@ exports.getOneUser = (req, res, next) => {
     mysqlconnection.query('SELECT id, pseudo, date_signup FROM user WHERE id = ?', req.params.id,  
         function (err, result) {
             if (err) {
-                console.log('error 400');
-                res.status(404).json({ error: 'Bad request' });
+                res.status(500).json({ error: 'Bad request' });
             }else{
                 if (!result[0]) {
                     console.log('error 404 not found');
@@ -33,7 +32,7 @@ exports.getAllArticlesFromOne = (req, res, next) => {
     mysqlconnection.query('SELECT article.id, article.user_id, article.title, article.description, article.imageUrl, article.likes, article.date_post, user.pseudo FROM article JOIN user WHERE article.user_id = user.id AND user_id = ? ORDER BY date_post DESC', req.params.id,
         function (err, result) {
             if (err) {
-                res.status(400).json({ err });
+                res.status(500).json({ err });
             }else{
                 res.status(200).json(result);
             }
@@ -47,7 +46,7 @@ exports.deleteUser = (req, res, next) => {
     mysqlconnection.query('SELECT * FROM user WHERE id = ?', req.params.id,  
     function (err, result) {
         if (err) {
-            res.status(400).json( { error: 'Wrong request' } );
+            res.status(500).json( { error: 'Wrong request' } );
         }else{
             const user = result[0];
             if (!user){
@@ -56,7 +55,7 @@ exports.deleteUser = (req, res, next) => {
 
                 //Vérification que la demande de suppression vient de l'utilisateur lui même ou de l'admin
                 if (result[0].user_id !== req.auth.user_id && req.auth.user === 0) {
-                    res.status(400).json( { error: new Error('Unauthorized request!') } );
+                    res.status(401).json( { error: new Error('Unauthorized request!') } );
                 } else {
                     if (result[0].user_id === req.auth.user_id && req.auth.user === 1)
                     {
@@ -66,7 +65,7 @@ exports.deleteUser = (req, res, next) => {
                         mysqlconnection.query('DELETE FROM user WHERE id = ?', req.params.id,  
                         function (err, result) {
                             if (err) {
-                                res.status(400).json({ error });
+                                res.status(500).json({ error });
                             }else{
                                 res.status(200).json('Profil supprimé');
                             }
