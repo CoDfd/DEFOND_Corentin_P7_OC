@@ -159,7 +159,7 @@ export default {
 
         & input{
         height: 50px;
-        width: 220px;
+        width: 180px;
         font-size: 110%;
         font-weight: 600;
         background-color: lighten(#0968EC,0%);

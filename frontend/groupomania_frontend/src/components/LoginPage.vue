@@ -48,7 +48,6 @@ export default {
 
   &__page {
     width : 70%;
-    min-width : 767px;
     background-color: white;
     margin : 0;
     padding-top: 20px;
@@ -80,9 +79,6 @@ export default {
 }
 
 .welcome-action{
-  width : 40%;
-  max-width: 900px;
-  height : 50vh ;
 
   background-color: #F0F2F5;
   border-radius: 20px;
@@ -101,5 +97,46 @@ export default {
     }  
 }
 
+@media (min-width : 768px) {
+  .hello__page {
+    min-width : 767px;
+  }
 
+  .welcome-action{
+    width : 40%;
+    max-width: 900px;
+    height : 50vh ;
+  }
+}
+
+@media (max-width: 767px)
+{
+  .hello {
+    &__page {
+      width : 95%;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+
+      & .welcome{
+        height : auto;
+        padding : 0px 0px 20px 0px;;
+        & h1 {
+          margin : 0;
+        }
+        & img
+        {
+            display : none;
+        }
+      }
+    }
+  }
+
+  .welcome-action{
+    width : 80%;
+    max-width: 750px;
+    max-height : 60vh;
+  }
+
+}
 </style>

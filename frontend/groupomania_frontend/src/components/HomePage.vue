@@ -74,7 +74,6 @@ export default {
 <style scoped lang="scss">
 .home {
   width : 100%;
-  height : calc(100% - 180px);
   background-color: #F0F2F5;
   margin : 0;
   display : flex ;
@@ -117,14 +116,19 @@ export default {
 }
 
 @media (min-width : 768px) {
-  .home__scroll {
-    min-width : 767px;
+  .home{
+    height : calc(100% - 180px);
+
+    &__scroll {
+      min-width : 767px;
+    }
   }
 }
 
 @media (max-width: 767px)
 {
   .home {
+    height : calc(100% - 150px);
     &__scroll {
       width : 95%;
     }

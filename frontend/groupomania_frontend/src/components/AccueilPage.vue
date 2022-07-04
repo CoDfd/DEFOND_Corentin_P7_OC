@@ -42,10 +42,9 @@ export default {
 .hello {
   width : 100%;
   Height : 100%;
-  border : 1px solid white;
   background-color: #F0F2F5;
   margin : 0;
-  padding-top: 20px;
+  padding: 20px 0 0 0;
   flex : 1;
 
   display : flex ;

@@ -313,6 +313,16 @@ export default {
     }
   }
 
+  &__image {
+    width : 100%;
+    overflow : hidden;
+    & img {
+      max-width : 100%;
+      height : fit-content;
+      object-fit:scale-down;
+    }
+  }
+
   &__option {
     border-top: solid 2px lightgray;
     border-bottom: solid 2px lightgray;

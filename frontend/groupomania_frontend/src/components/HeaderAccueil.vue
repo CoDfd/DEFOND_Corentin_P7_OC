@@ -61,10 +61,6 @@ header
         width: auto;
         height: auto;
         padding: 20px 0px 0px 0px;
-    
-        display: flex;
-        justify-content: center;
-        text-align: center;
 
         &__img{
             
@@ -135,7 +131,71 @@ header
     }
 
 }
-@media (max-width: 768px)
+
+@media (min-width: 768px){
+.logo {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+}
+
+@media (max-width: 767px)
+{
+header {
+    width : 100%;
+    height : 100px;
+
+    &  .logo {
+        flex-direction :row-reverse;
+        &__img{
+            margin : 0;
+        }
+        & img
+        {
+            width: 60%;
+            height : 60%;
+        }
+
+    }
+
+    & nav {
+        width : auto;
+        padding : 0;
+        & .nav {
+            width : auto;
+            min-width: 50px;
+
+                display : flex;
+                align-items: flex-end;
+
+            &__button {
+                width : auto;
+                display : flex;
+                align-items: flex-end;
+                & p {
+                    margin : 0;
+                    width : auto;
+                    padding : 20px;
+                }
+            }
+
+            &__buttonselected {
+                width : auto;
+                display : flex;
+                align-items: flex-end;
+                & p {
+                    margin : 0;
+                    width : auto;
+                    padding : 20px;
+                }
+            }
+        }
+    }
+}
+}
+
+/*@media (max-width: 768px)
 {
     header {
         &__logo {
@@ -146,5 +206,5 @@ header
     {
         display : hidden;
     }
-}
+}*/
 </style>

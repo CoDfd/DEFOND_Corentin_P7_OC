@@ -228,7 +228,7 @@ export default {
         cursor: pointer;
 
         height: 30px;
-        width: 150px;
+        min-width: 150px;
         font-size: 90%;
         font-weight: 500;
         background-color: lighten(#0968EC,0%);
@@ -254,7 +254,7 @@ export default {
 
 
       & input {
-        visibility : hidden;
+        display : none;
       }
     }
 
@@ -292,5 +292,6 @@ export default {
 }
 
 }
+
 
 </style>
