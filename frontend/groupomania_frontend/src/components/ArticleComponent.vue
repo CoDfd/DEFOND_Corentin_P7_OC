@@ -3,7 +3,7 @@
 
     <div class="article__header">
       <h2>{{article.title}}</h2>
-      <p class="article__author"> Par <span class="article__author__name">{{article.pseudo}}</span>, le {{convertDate(article).day}} à {{convertDate(article).hour}}</p>
+      <p class="article__author"> Par <router-link :to="{ name: 'profile', params: { user_id: article.user_id }}" class="article__author__name">{{article.pseudo}}</router-link>, le {{convertDate(article).day}} à {{convertDate(article).hour}}</p>
     </div>
 
     <div class="article__description">
@@ -31,7 +31,7 @@
     <div v-if="showComment" class="article__comment">
 
 
-      <form method="post" @submit.prevent="postComment"  class="article__comment__form">
+      <form method="post" @submit.self.prevent="postComment"  class="article__comment__form">
         <div class="article__comment__form__text">
           <textarea v-model="comment_description" @click.stop.prevent name="comment" id="comment" placeholder="Ajouter un commentaire" rows="2"></textarea>
         </div>
@@ -291,6 +291,8 @@ export default {
   &__author {
     font-style: italic;
     &__name {
+      text-decoration: none;
+      color : unset;
       font-weight: 600;
     }
   }
