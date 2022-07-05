@@ -43,13 +43,13 @@ Comme indiqué dans le fichier `.env`, le server doit fonctionner sur http://loc
 
 ## ---- Frontend ----
 
-**Installation :**
-Dans le terminal, placez vous dans le dossier >frontend/groupomania_frontend, puis lancez
-    `npm install`
-
-**Démarrage du serve :**
-Depuis le même dossier, lancer 
-    `npm run serve`
-
+**Installation :**  
+Dans le terminal, placez vous dans le dossier >frontend/groupomania_frontend, puis lancez  
+    `npm install`  
+  
+**Démarrage du serve :**  
+Depuis le même dossier, lancer  
+    `npm run serve`  
+  
 Si le navigateur ne s'ouvre pas automatiquement allez à :
 http://localhost:8080/
