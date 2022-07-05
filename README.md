@@ -1,7 +1,7 @@
 # ----- Bienvenu dans le projet Groupalink -----
 
-Formation Web Dev Openclassroom
-Projet 7 - création du réseau social de l'entreprise Groupomania
+Formation Web Dev Openclassroom  
+Projet 7 - création du réseau social de l'entreprise Groupomania  
 Stack utilisé :
 * VueJs
 * Node + Express
