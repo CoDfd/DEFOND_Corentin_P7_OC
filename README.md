@@ -9,10 +9,10 @@ Stack utilisé :
 
 ## ---- Backend ----
 
-**Installation :**
-Dans le terminal, placez vous dans le dossier >backend. 
-Pour installer les paquets et les dépendances, lancez
-    `npm install` 
+**Installation :**  
+Dans le terminal, placez vous dans le dossier >backend.  
+Pour installer les paquets et les dépendances, lancez  
+    `npm install`   
 Créer un fichier `.env` dans le dossier >backend, dans lequel il faut rentrer les clés de hashage de sécurité, les ports et les identifiants de la base de donnée comme suit :
 
             <--->
@@ -31,14 +31,14 @@ Créer un fichier `.env` dans le dossier >backend, dans lequel il faut rentrer l
             MYSQL_DB_NAME = "Groupomania"
             <--->
 
-Créez également un dossier `images` dans le dossier >backend, qui servira à stocker les images des posts.
+Créez également un dossier `images` dans le dossier >backend, qui servira à stocker les images des posts.  
 
-**Démarrage du server**
-Ensuite, pour lancer le server, lancer toujours depuis le dossier >backend la commande
-    `nodemon server`
-ou 
-    `npm start`
-
+**Démarrage du server**  
+Ensuite, pour lancer le server, lancer toujours depuis le dossier >backend la commande  
+    `nodemon server`  
+ou  
+    `npm start`  
+  
 Comme indiqué dans le fichier `.env`, le server doit fonctionner sur http://localhost:3000/
 
 ## ---- Frontend ----
